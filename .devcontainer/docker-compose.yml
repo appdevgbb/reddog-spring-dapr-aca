@@ -19,9 +19,6 @@ services:
     restart: unless-stopped
     volumes:
       - storage-data:/data
-    network_mode: service:platform
-    depends_on:
-      - platform
   cosmos:
     image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
     mem_limit: "3g"
