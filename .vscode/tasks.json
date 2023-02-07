@@ -1,20 +1,13 @@
 {
     "version": "2.0.0",
     "tasks": [
-        
         {
-            "label": "Start API",
-            "type": "dotenv",
-            "targetTasks": "API mvn spring-boot:run",
-            "file": "${input:dotEnvFilePath}"
-        },
-        {
-            "label": "API mvn spring-boot:run",
-            "detail": "Helper task--use 'Start API' task to ensure environment is set up correctly",
+            "label": "Start Accounting Service",
+            "detail": "Helper task--use 'Accounting Service' task to ensure environment is set up correctly",
             "type": "shell",
             "command": "./mvnw spring-boot:run",
             "options": {
-                "cwd": "${workspaceFolder}/src/api/"
+                "cwd": "${workspaceFolder}/src/accounting-service/"
             },
             "presentation": {
                 "panel": "dedicated",
@@ -22,11 +15,12 @@
             "problemMatcher": []
         },
         {
-            "label": "Build API",
+            "label": "Build Accounting Service",
             "command": "./mvnw",
             "type": "shell",
+            "dependsOn": "Dapr Accounting Service",
             "options": {
-                "cwd": "${workspaceFolder}/src/api/"
+                "cwd": "${workspaceFolder}/src/accounting-service/"
             },
             "args": [
                 "package",
@@ -35,56 +29,44 @@
             "problemMatcher": []
         },
         {
-            "label": "Start Web",
-            "type": "dotenv",
-            "targetTasks": [
-                "Restore Web",
-                "Web npm start"
+            "label": "Dapr Accounting Service",
+            "command": "dapr",
+            "args": [
+                "run",
+                "--app-id",
+                "accounting-service",
+                "--components-path",
+                "${workspaceFolder}/infra/components/accounting-service",
+                "--app-port",
+                "8707",
+                "--dapr-grpc-port",
+                "5101",
+                "--dapr-http-port",
+                "5180"
             ],
-            "file": "${input:dotEnvFilePath}"
-        },
-        {
-            "label": "Restore Web",
-            "type": "shell",
-            "command": "azd restore --service web",
-            "presentation": {
-                "reveal": "silent"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Web npm start",
-            "detail": "Helper task--use 'Start Web' task to ensure environment is set up correctly",
-            "type": "shell",
-            "command": "npm run start",
-            "options": {
-                "cwd": "${workspaceFolder}/src/web/",
-                "env": {
-                    "REACT_APP_API_BASE_URL": "http://localhost:3100",
-                    "BROWSER": "none"
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": [
+                    {
+                        "regexp": ".",
+                        "file": 1,
+                        "location": 2,
+                        "message": 3
+                    }
+                ],
+                "background": {
+                    "beginsPattern": "^.*Starting Dapr.*",
+                    "endsPattern": "^.*You're up and running!.*"
                 }
-            },
-            "presentation": {
-                "panel": "dedicated",
-            },
-            "problemMatcher": []
+            }
         },
-
         {
-            "label": "Start API and Web",
-            "dependsOn":[
-                "Start API",
-                "Start Web"
-            ],
-            "problemMatcher": []
-        }
-    ],
-
-    "inputs": [
-        {
-            "id": "dotEnvFilePath",
-            "type": "command",
-            "command": "azure-dev.commands.getDotEnvFilePath"
-        }
+            "label": "Dapr Stop Accounting Service",
+            "command": "dapr",
+            "args": [
+                "stop",
+                "accounting-service"
+            ]
+        },
     ]
 }

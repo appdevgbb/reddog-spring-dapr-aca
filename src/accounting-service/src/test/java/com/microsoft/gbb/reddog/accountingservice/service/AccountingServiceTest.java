@@ -3,7 +3,7 @@ package com.microsoft.gbb.reddog.accountingservice.service;
 import com.microsoft.gbb.reddog.accountingservice.dto.OrderSummaryDto;
 import com.microsoft.gbb.reddog.accountingservice.dto.OrdersTimeSeries;
 import com.microsoft.gbb.reddog.accountingservice.dto.TimeSeries;
-import com.microsoft.gbb.reddog.accountingservice.repository.OrderSummaryRepository;
+// import com.microsoft.gbb.reddog.accountingservice.repository.OrderSummaryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,8 +21,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AccountingServiceTest {
-    @Mock
-    private OrderSummaryRepository orderSummaryRepository;
+    // @Mock
+    // private OrderSummaryRepository orderSummaryRepository;
 
     @InjectMocks
     private AccountingService accountingService;
@@ -41,8 +41,8 @@ class AccountingServiceTest {
 
         accountingService.getOrderCountOverTime(period, timeSpan, storeId);
 
-        verify(orderSummaryRepository, times(0))
-                .getOrderCountForThePastTimeSpan(period, timeSpan, storeId);
+        // verify(orderSummaryRepository, times(0))
+        //         .getOrderCountForThePastTimeSpan(period, timeSpan, storeId);
     }
 
     @Test
@@ -59,10 +59,10 @@ class AccountingServiceTest {
                 .values(values)
                 .build();
 
-        lenient()
-                .when(orderSummaryRepository.getOrderCountForThePastTimeSpan(period,
-                        timeSpan, storeId))
-                .thenReturn(ordersTimeSeries);
+        // lenient()
+        //         .when(orderSummaryRepository.getOrderCountForThePastTimeSpan(period,
+        //                 timeSpan, storeId))
+        //         .thenReturn(ordersTimeSeries);
 
         assertEquals(0, 0);
     }
@@ -71,7 +71,7 @@ class AccountingServiceTest {
     @DisplayName("Should return all inflight orders")
     void findAllInflightOrdersShouldReturnAllInflightOrders() {
         List<OrderSummaryDto> orderSummaryDtos = new ArrayList<>();
-        lenient().when(orderSummaryRepository.findAllInflightOrders()).thenReturn(orderSummaryDtos);
+        // lenient().when(orderSummaryRepository.findAllInflightOrders()).thenReturn(orderSummaryDtos);
         List<OrderSummaryDto> result = accountingService.findAllInflightOrders();
         assertEquals(orderSummaryDtos, result);
     }

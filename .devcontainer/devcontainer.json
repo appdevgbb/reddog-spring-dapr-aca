@@ -33,7 +33,7 @@
         "GitHub.copilot",
 		"GitHub.copilot-labs",
     ],
-    "postCreateCommand": "",
+    "postCreateCommand": "bash .devcontainer/startup.sh",
     "remoteUser": "root",
     "hostRequirements": {
         "memory": "16gb"
