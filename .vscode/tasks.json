@@ -271,5 +271,59 @@
                 "receipt-generation-service"
             ]
         },
+        {
+            "label": "Build Virtual Customers",
+            "command": "./mvnw",
+            "type": "shell",
+            "dependsOn": "Dapr Virtual Customers",
+            "options": {
+                "cwd": "${workspaceFolder}/src/virtual-customers/"
+            },
+            "args": [
+                "package",
+                "-DskipTests"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Dapr Virtual Customers",
+            "command": "dapr",
+            "args": [
+                "run",
+                "--app-id",
+                "virtual-customers",
+                "--components-path",
+                "${workspaceFolder}/infra/components/virtual-customers",
+                "--app-port",
+                "8701",
+                "--dapr-grpc-port",
+                "5601",
+                "--dapr-http-port",
+                "5680"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": [
+                    {
+                        "regexp": ".",
+                        "file": 1,
+                        "location": 2,
+                        "message": 3
+                    }
+                ],
+                "background": {
+                    "beginsPattern": "^.*Starting Dapr.*",
+                    "endsPattern": "^.*You're up and running!.*"
+                }
+            }
+        },
+        {
+            "label": "Dapr Stop Virtual Customers",
+            "command": "dapr",
+            "args": [
+                "stop",
+                "virtual-customers"
+            ]
+        },
     ]
 }

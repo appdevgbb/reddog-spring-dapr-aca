@@ -108,6 +108,30 @@
                 "AZURESTORAGEACCOUNTKEY":"Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==",
                 "AZURESTORAGEENDPOINT":"http://127.0.0.1:10000"
             }, 
+        },
+        {
+            "name": "Debug Virtual Customers",
+            "type": "java",
+            "request": "launch",
+            "preLaunchTask": "Build Virtual Customers",
+            "postDebugTask": "Dapr Stop Virtual Customers",
+            "mainClass": "com.microsoft.gbb.reddog.virtualcustomers.VirtualCustomersApplication",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/virtual-customers",
+            "env": {
+                "KAFKASASLMECHANISM":"PLAIN",
+                "KAFKASASLJAASCONFIG":"org.apache.kafka.common.security.plain.PlainLoginModule required username='' password='';",
+                "KAFKABOOTSTRAPSERVERS":"broker:29092",
+                "KAFKASECURITYPROTOCOL":"PLAINTEXT",
+                "AZURECOSMOSDBKEY":"C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+                "AZURECOSMOSDBSECONDARYKEY":"C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+                "AZURECOSMOSDBDATABASENAME":"accounting",
+                "AZURECOSMOSDBURI":"https://cosmos:8081",
+                "KAFKATOPICNAME":"reddog.orders",
+                "AZURESTORAGEACCOUNTNAME":"devstoreaccount1",
+                "AZURESTORAGEACCOUNTKEY":"Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==",
+                "AZURESTORAGEENDPOINT":"http://127.0.0.1:10000"
+            }, 
         }
     ],
     "compounds": [
@@ -116,8 +140,9 @@
           "configurations": ["Debug Accounting Service",
                              "Debug Loyalty Service", 
                              "Debug Makeline Service",
-                            "Debug Order Service",
-                            "Debug Receipt Generation Service"],
+                             "Debug Order Service",
+                             "Debug Receipt Generation Service",
+                             "Debug Virtual Customers"],
           "stopAll": true
         }
       ]
