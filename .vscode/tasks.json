@@ -325,5 +325,61 @@
                 "virtual-customers"
             ]
         },
+        {
+            "label": "Build Virtual Worker",
+            "command": "./mvnw",
+            "type": "shell",
+            "dependsOn": "Dapr Virtual Worker",
+            "options": {
+                "cwd": "${workspaceFolder}/src/virtual-worker/"
+            },
+            "args": [
+                "package",
+                "-DskipTests"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Dapr Virtual Worker",
+            "command": "dapr",
+            "args": [
+                "run",
+                "--app-id",
+                "virtual-worker",
+                "--components-path",
+                "${workspaceFolder}/infra/components/virtual-worker",
+                "--app-port",
+                "8706",
+                "--dapr-grpc-port",
+                "5701",
+                "--dapr-http-port",
+                "5780"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": [
+                    {
+                        "regexp": ".",
+                        "file": 1,
+                        "location": 2,
+                        "message": 3
+                    }
+                ],
+                "background": {
+                    "beginsPattern": "^.*Starting Dapr.*",
+                    "endsPattern": "^.*You're up and running!.*"
+                }
+            }
+        },
+        {
+            "label": "Dapr Stop Virtual Worker",
+            "command": "dapr",
+            "args": [
+                "stop",
+                "virtual-worker"
+            ]
+        },
     ]
 }
+
+
