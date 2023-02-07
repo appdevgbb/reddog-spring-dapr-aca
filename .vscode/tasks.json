@@ -109,5 +109,59 @@
                 "loyalty-service"
             ]
         },
+        {
+            "label": "Build Makeline Service",
+            "command": "./mvnw",
+            "type": "shell",
+            "dependsOn": "Dapr Makeline Service",
+            "options": {
+                "cwd": "${workspaceFolder}/src/makeline-service/"
+            },
+            "args": [
+                "package",
+                "-DskipTests"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Dapr Makeline Service",
+            "command": "dapr",
+            "args": [
+                "run",
+                "--app-id",
+                "makeline-service",
+                "--components-path",
+                "${workspaceFolder}/infra/components/makeline-service",
+                "--app-port",
+                "8704",
+                "--dapr-grpc-port",
+                "5301",
+                "--dapr-http-port",
+                "5380"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": [
+                    {
+                        "regexp": ".",
+                        "file": 1,
+                        "location": 2,
+                        "message": 3
+                    }
+                ],
+                "background": {
+                    "beginsPattern": "^.*Starting Dapr.*",
+                    "endsPattern": "^.*You're up and running!.*"
+                }
+            }
+        },
+        {
+            "label": "Dapr Stop Makeline Service",
+            "command": "dapr",
+            "args": [
+                "stop",
+                "makeline-service"
+            ]
+        },
     ]
 }

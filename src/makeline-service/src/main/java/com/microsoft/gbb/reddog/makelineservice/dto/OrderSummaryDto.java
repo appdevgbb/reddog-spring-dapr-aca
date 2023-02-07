@@ -1,11 +1,11 @@
 package com.microsoft.gbb.reddog.makelineservice.dto;
 
-import com.azure.spring.data.cosmos.core.mapping.Container;
-import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
+// import com.azure.spring.data.cosmos.core.mapping.Container;
+// import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.springframework.data.annotation.Id;
+// import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,14 +19,14 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Container(containerName="reddog11", ru="400")
+// @Container(containerName="reddog11", ru="400")
 public class OrderSummaryDto extends AbstractDto<String> {
 
     @JsonProperty("orderCompletedDate")
     private LocalDate orderCompletedDate;
 
     @JsonProperty("loyaltyId")
-    @PartitionKey
+    // @PartitionKey
     private String loyaltyId;
 
     @JsonProperty("firstName")
@@ -36,7 +36,7 @@ public class OrderSummaryDto extends AbstractDto<String> {
     private String lastName;
 
     @JsonProperty("orderId")
-    @Id
+    // @Id
     private String orderId;
 
     @JsonProperty("storeId")
