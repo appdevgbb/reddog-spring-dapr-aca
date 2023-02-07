@@ -29,7 +29,9 @@
                 "--dapr-grpc-port",
                 "5101",
                 "--dapr-http-port",
-                "5180"
+                "5180",
+                "--placement-host-address",
+                "dapr-placement:50006"
             ],
             "isBackground": true,
             "problemMatcher": {
@@ -83,7 +85,9 @@
                 "--dapr-grpc-port",
                 "5201",
                 "--dapr-http-port",
-                "5280"
+                "5280",
+                "--placement-host-address",
+                "dapr-placement:50006"
             ],
             "isBackground": true,
             "problemMatcher": {
@@ -137,7 +141,9 @@
                 "--dapr-grpc-port",
                 "5301",
                 "--dapr-http-port",
-                "5380"
+                "5380",
+                "--placement-host-address",
+                "dapr-placement:50006"
             ],
             "isBackground": true,
             "problemMatcher": {
@@ -191,7 +197,9 @@
                 "--dapr-grpc-port",
                 "5401",
                 "--dapr-http-port",
-                "5480"
+                "5480",
+                "--placement-host-address",
+                "dapr-placement:50006"
             ],
             "isBackground": true,
             "problemMatcher": {
@@ -245,7 +253,9 @@
                 "--dapr-grpc-port",
                 "5501",
                 "--dapr-http-port",
-                "5580"
+                "5580",
+                "--placement-host-address",
+                "dapr-placement:50006"
             ],
             "isBackground": true,
             "problemMatcher": {
@@ -299,7 +309,9 @@
                 "--dapr-grpc-port",
                 "5601",
                 "--dapr-http-port",
-                "5680"
+                "5680",
+                "--placement-host-address",
+                "dapr-placement:50006"
             ],
             "isBackground": true,
             "problemMatcher": {
@@ -353,7 +365,9 @@
                 "--dapr-grpc-port",
                 "5701",
                 "--dapr-http-port",
-                "5780"
+                "5780",
+                "--placement-host-address",
+                "dapr-placement:50006"
             ],
             "isBackground": true,
             "problemMatcher": {
