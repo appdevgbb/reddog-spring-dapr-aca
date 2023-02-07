@@ -24,15 +24,15 @@ import java.io.OutputStream;
 public class ReceiptGenerationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceiptGenerationService.class);
 
-    @Qualifier("azureStorageBlobProtocolResolver")
-    @Autowired
-    private ResourceLoader resourceLoader;
+    // @Qualifier("azureStorageBlobProtocolResolver")
+    // @Autowired
+    // private ResourceLoader resourceLoader;
 
-    @Value("${data.BLOB.CONTAINER}")
-    private String receiptsStorageBlobContainer;
+    // @Value("${data.BLOB.CONTAINER}")
+    // private String receiptsStorageBlobContainer;
 
-    @Value("${spring.cloud.azure.storage.blob.endpoint}")
-    private String azureStorageEndpoint;
+    // @Value("${spring.cloud.azure.storage.blob.endpoint}")
+    // private String azureStorageEndpoint;
 
     public ReceiptGenerationService() {
     }
@@ -48,12 +48,13 @@ public class ReceiptGenerationService {
     }
 
     public String writeBlobFile(OrderSummaryDto orderSummary, String filename) throws IOException {
-        String link = String.format("azure-blob://%s/receipts/%s", receiptsStorageBlobContainer, filename);
-        Resource blobFile = resourceLoader.getResource(link);
-        try (OutputStream os = ((WritableResource) blobFile).getOutputStream()) {
-            os.write(orderSummary.toString().getBytes());
-        }
-        return String.format("%s/%s/%s", azureStorageEndpoint, receiptsStorageBlobContainer, filename);
+        // String link = String.format("azure-blob://%s/receipts/%s", receiptsStorageBlobContainer, filename);
+        // Resource blobFile = resourceLoader.getResource(link);
+        // try (OutputStream os = ((WritableResource) blobFile).getOutputStream()) {
+        //     os.write(orderSummary.toString().getBytes());
+        // }
+        // return String.format("%s/%s/%s", azureStorageEndpoint, receiptsStorageBlobContainer, filename);
+        return "";
     }
 
 }

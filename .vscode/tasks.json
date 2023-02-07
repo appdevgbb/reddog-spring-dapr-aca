@@ -217,5 +217,59 @@
                 "order-service"
             ]
         },
+        {
+            "label": "Build Receipt Generation Service",
+            "command": "./mvnw",
+            "type": "shell",
+            "dependsOn": "Dapr Receipt Generation Service",
+            "options": {
+                "cwd": "${workspaceFolder}/src/receipt-generation-service/"
+            },
+            "args": [
+                "package",
+                "-DskipTests"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Dapr Receipt Generation Service",
+            "command": "dapr",
+            "args": [
+                "run",
+                "--app-id",
+                "receipt-generation-service",
+                "--components-path",
+                "${workspaceFolder}/infra/components/receipt-generation-service",
+                "--app-port",
+                "8705",
+                "--dapr-grpc-port",
+                "5501",
+                "--dapr-http-port",
+                "5580"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": [
+                    {
+                        "regexp": ".",
+                        "file": 1,
+                        "location": 2,
+                        "message": 3
+                    }
+                ],
+                "background": {
+                    "beginsPattern": "^.*Starting Dapr.*",
+                    "endsPattern": "^.*You're up and running!.*"
+                }
+            }
+        },
+        {
+            "label": "Dapr Stop Receipt Generation Service",
+            "command": "dapr",
+            "args": [
+                "stop",
+                "receipt-generation-service"
+            ]
+        },
     ]
 }
