@@ -5,31 +5,31 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
+// import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @ToString
-@Entity
-@Table(name = "customer_order")
+// @Entity
+// @Table(name = "customer_order")
 public class CustomerOrder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "customer_order_id", nullable = false)
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.AUTO)
+    // @Column(name = "customer_order_id", nullable = false)
     private Long customerOrderId;
 
-    @Column(name = "loyalty_id")
+    // @Column(name = "loyalty_id")
     private String loyaltyId;
 
-    @Column(name = "first_name")
+    // @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
+    // @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "store_id")
+    // @Column(name = "store_id")
     private String storeId;
 
     @JsonProperty("origin")
@@ -41,7 +41,7 @@ public class CustomerOrder {
     @JsonProperty("storeLongitude")
     private String storeLongitude;
 
-    @OneToMany(mappedBy = "customerOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    // @OneToMany(mappedBy = "customerOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<OrderItemSummary> orderItems = new ArrayList<>();
 

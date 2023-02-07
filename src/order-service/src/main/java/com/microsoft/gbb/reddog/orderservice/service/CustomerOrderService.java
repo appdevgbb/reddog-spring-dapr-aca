@@ -6,8 +6,8 @@ import com.microsoft.gbb.reddog.orderservice.dto.OrderSummaryDto;
 import com.microsoft.gbb.reddog.orderservice.entity.Product;
 import com.microsoft.gbb.reddog.orderservice.exception.ProductsNotFoundException;
 import com.microsoft.gbb.reddog.orderservice.messaging.TopicProducer;
-import com.microsoft.gbb.reddog.orderservice.repository.CustomerOrderRepository;
-import com.microsoft.gbb.reddog.orderservice.repository.ProductRepository;
+// import com.microsoft.gbb.reddog.orderservice.repository.CustomerOrderRepository;
+// import com.microsoft.gbb.reddog.orderservice.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -30,13 +30,13 @@ import java.util.concurrent.atomic.AtomicReference;
 @Qualifier("customerorder")
 public class CustomerOrderService implements OrderService {
     private final TopicProducer topicProducer;
-    private final ProductRepository productRepository;
+    // private final ProductRepository productRepository;
 
-    public CustomerOrderService(TopicProducer topicProducer,
+    public CustomerOrderService(TopicProducer topicProducer/* ,
                                 ProductRepository productRepository,
-                                CustomerOrderRepository customerOrderRepository) {
+                                CustomerOrderRepository customerOrderRepository*/) {
         this.topicProducer = topicProducer;
-        this.productRepository = productRepository;
+        // this.productRepository = productRepository;
     }
     /**
      * Create order for customer.
@@ -54,10 +54,10 @@ public class CustomerOrderService implements OrderService {
     public OrderSummaryDto getOrderSummary(CustomerOrderDto order) {
         log.info("Creating order summary with order: {}", order.toString());
         // Retrieve all the items
-        List<Product> products = Optional.ofNullable(productRepository.findAll()).orElseThrow(() -> {
+        List<Product> products = new ArrayList<>();/*Optional.ofNullable(productRepository.findAll()).orElseThrow(() -> {
             log.error("Unable to fetch products");
             return new ProductsNotFoundException("Unable to fetch products");
-        });
+        });*/
 
         // Iterate through the list of ordered items to calculate
         // the total and compile a list of item summaries.
