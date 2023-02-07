@@ -2,19 +2,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Start Accounting Service",
-            "detail": "Helper task--use 'Accounting Service' task to ensure environment is set up correctly",
-            "type": "shell",
-            "command": "./mvnw spring-boot:run",
-            "options": {
-                "cwd": "${workspaceFolder}/src/accounting-service/"
-            },
-            "presentation": {
-                "panel": "dedicated",
-            },
-            "problemMatcher": []
-        },
-        {
             "label": "Build Accounting Service",
             "command": "./mvnw",
             "type": "shell",
@@ -66,6 +53,60 @@
             "args": [
                 "stop",
                 "accounting-service"
+            ]
+        },
+        {
+            "label": "Build Loyalty Service",
+            "command": "./mvnw",
+            "type": "shell",
+            "dependsOn": "Dapr Loyalty Service",
+            "options": {
+                "cwd": "${workspaceFolder}/src/loyalty-service/"
+            },
+            "args": [
+                "package",
+                "-DskipTests"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Dapr Loyalty Service",
+            "command": "dapr",
+            "args": [
+                "run",
+                "--app-id",
+                "loyalty-service",
+                "--components-path",
+                "${workspaceFolder}/infra/components/loyalty-service",
+                "--app-port",
+                "8703",
+                "--dapr-grpc-port",
+                "5201",
+                "--dapr-http-port",
+                "5280"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": [
+                    {
+                        "regexp": ".",
+                        "file": 1,
+                        "location": 2,
+                        "message": 3
+                    }
+                ],
+                "background": {
+                    "beginsPattern": "^.*Starting Dapr.*",
+                    "endsPattern": "^.*You're up and running!.*"
+                }
+            }
+        },
+        {
+            "label": "Dapr Stop Loyalty Service",
+            "command": "dapr",
+            "args": [
+                "stop",
+                "loyalty-service"
             ]
         },
     ]
