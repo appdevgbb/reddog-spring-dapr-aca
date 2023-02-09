@@ -1,24 +1,6 @@
 spring:
   application:
       name: order-service
-  kafka:
-    topic:
-      name: ${KAFKATOPICNAME}
-      group: ${KAFKATOPICGROUP:order-service}
-    producer:
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      properties:
-        sasl:
-          mechanism: ${KAFKASASLMECHANISM:PLAIN}
-          jaas:
-            config: ${KAFKASASLJAASCONFIG}
-        spring:
-          json:
-            type:
-              mapping: ordersummary:com.microsoft.gbb.reddog.orderservice.dto.OrderSummaryDto
-      bootstrap-servers: ${KAFKABOOTSTRAPSERVERS:localhost:9092}
-    security:
-      protocol: ${KAFKASECURITYPROTOCOL:PLAINTEXT}
   jpa:
     properties:
       hibernate:

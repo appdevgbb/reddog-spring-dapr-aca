@@ -5,13 +5,13 @@ import com.microsoft.gbb.reddog.orderservice.dto.OrderItemSummaryDto;
 import com.microsoft.gbb.reddog.orderservice.dto.OrderSummaryDto;
 import com.microsoft.gbb.reddog.orderservice.entity.Product;
 import com.microsoft.gbb.reddog.orderservice.exception.ProductsNotFoundException;
-import com.microsoft.gbb.reddog.orderservice.messaging.TopicProducer;
+// import com.microsoft.gbb.reddog.orderservice.messaging.TopicProducer;
 // import com.microsoft.gbb.reddog.orderservice.repository.CustomerOrderRepository;
 // import com.microsoft.gbb.reddog.orderservice.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+// import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -26,18 +26,18 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Slf4j
 @Service
-@Transactional
+// @Transactional
 @Qualifier("customerorder")
 public class CustomerOrderService implements OrderService {
-    private final TopicProducer topicProducer;
+    // private final TopicProducer topicProducer;
     // private final ProductRepository productRepository;
 
-    public CustomerOrderService(TopicProducer topicProducer/* ,
-                                ProductRepository productRepository,
-                                CustomerOrderRepository customerOrderRepository*/) {
-        this.topicProducer = topicProducer;
-        // this.productRepository = productRepository;
-    }
+    // public CustomerOrderService(TopicProducer topicProducer/* ,
+    //                             ProductRepository productRepository,
+    //                             CustomerOrderRepository customerOrderRepository*/) {
+    //     this.topicProducer = topicProducer;
+    //     // this.productRepository = productRepository;
+    // }
     /**
      * Create order for customer.
      *
@@ -47,7 +47,7 @@ public class CustomerOrderService implements OrderService {
     public OrderSummaryDto createOrder(CustomerOrderDto order) {
         log.info("Creating order");
         var orderSummary = getOrderSummary(order);
-        topicProducer.send(orderSummary);
+        // topicProducer.send(orderSummary);
         return orderSummary;
     }
 

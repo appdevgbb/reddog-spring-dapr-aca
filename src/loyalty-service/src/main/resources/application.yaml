@@ -11,25 +11,6 @@ spring:
     password: ${AZUREREDISACCESSKEY}
     ssl: true
     connect-timeout: 5000
-  kafka:
-    topic:
-      name: ${KAFKATOPICNAME}
-      group: ${KAFKATOPICGROUP:loyalty-service}
-    bootstrap-servers: ${KAFKABOOTSTRAPSERVERS:localhost:9092}
-    security:
-      protocol: ${KAFKASECURITYPROTOCOL:PLAINTEXT}
-    consumer:
-      group-id: ${KAFKA_CONSUMER_GROUP_ID:loyaltyservice}
-      auto-offset-reset: latest
-      properties:
-        spring:
-          json:
-            trusted.packages: "*"
-            type.mapping: ordersummary:com.microsoft.gbb.reddog.loyaltyservice.dto.OrderSummaryDto
-        sasl:
-          jaas.config: ${KAFKASASLJAASCONFIG}
-          mechanism: ${KAFKASASLMECHANISM:PLAIN}
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
 eureka:
   client:
     register-with-eureka: false

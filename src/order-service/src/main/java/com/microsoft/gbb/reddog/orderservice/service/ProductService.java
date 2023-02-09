@@ -1,7 +1,7 @@
 package com.microsoft.gbb.reddog.orderservice.service;
 
 import com.microsoft.gbb.reddog.orderservice.dto.ProductDto;
-import com.microsoft.gbb.reddog.orderservice.mapper.ProductMapper;
+// import com.microsoft.gbb.reddog.orderservice.mapper.ProductMapper;
 // import com.microsoft.gbb.reddog.orderservice.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 // import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +15,17 @@ import java.util.List;
 @Service
 public class ProductService {
     // private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
+    // private final ProductMapper productMapper;
 
     private static final String PRODUCT_QUEUE = "productimagegen";
 
     // @Autowired
     // private JmsTemplate jmsTemplate;
 
-    public ProductService(/*ProductRepository productRepository, */ProductMapper productMapper) {
-        // this.productRepository = productRepository;
-        this.productMapper = productMapper;
-    }
+    // public ProductService(/*ProductRepository productRepository, */ProductMapper productMapper) {
+    //     // this.productRepository = productRepository;
+    //     // this.productMapper = productMapper;
+    // }
 
     public List<ProductDto> getAllProducts() {
         // return productMapper.toDto(productRepository.findAll());

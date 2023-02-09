@@ -6,7 +6,7 @@ import com.microsoft.gbb.reddog.receiptgenerationservice.service.ReceiptGenerati
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.annotation.KafkaListener;
+// import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,9 +32,9 @@ public class ReceiptGenerationController {
     }
 
     // TODO: Refactor with Avro schema in EH Schema Registry
-    @KafkaListener(id="generateReceipt",
-            topics = "#{'${spring.kafka.topic.name}'}",
-            groupId = "#{'${spring.kafka.topic.group}'}")
+    // @KafkaListener(id="generateReceipt",
+    //         topics = "#{'${spring.kafka.topic.name}'}",
+    //         groupId = "#{'${spring.kafka.topic.group}'}")
     public void generateReceiptAsync(OrderSummaryDto orderSummary) {
         log.info("Received message in topic: " + orderSummary);
         this.generateReceipt(orderSummary);

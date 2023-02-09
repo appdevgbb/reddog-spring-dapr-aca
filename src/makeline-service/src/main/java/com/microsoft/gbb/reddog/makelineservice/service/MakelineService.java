@@ -1,7 +1,7 @@
 package com.microsoft.gbb.reddog.makelineservice.service;
 
 import com.microsoft.gbb.reddog.makelineservice.dto.OrderSummaryDto;
-import com.microsoft.gbb.reddog.makelineservice.messaging.TopicProducer;
+// import com.microsoft.gbb.reddog.makelineservice.messaging.TopicProducer;
 // import com.microsoft.gbb.reddog.makelineservice.repository.OrderSummaryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,13 +16,13 @@ import java.util.List;
 @Slf4j
 @Component
 public class MakelineService {
-    private final TopicProducer topicProducer;
+    // private final TopicProducer topicProducer;
     //private final OrderSummaryRepository orderSummaryRepository;
 
-    public MakelineService(TopicProducer topicProducer/*, OrderSummaryRepository orderSummaryRepository*/) {
-        this.topicProducer = topicProducer;
-        //this.orderSummaryRepository = orderSummaryRepository;
-    }
+    // public MakelineService(TopicProducer topicProducer/*, OrderSummaryRepository orderSummaryRepository*/) {
+    //     this.topicProducer = topicProducer;
+    //     //this.orderSummaryRepository = orderSummaryRepository;
+    // }
 
     public OrderSummaryDto addOrderToMakeLine(OrderSummaryDto orderSummary) {
         log.info("Adding order to make line {}", orderSummary.toString());
