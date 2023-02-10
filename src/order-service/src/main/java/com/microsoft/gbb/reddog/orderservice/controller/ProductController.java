@@ -29,14 +29,4 @@ public class ProductController {
         });
         return ResponseEntity.ok(products);
     }
-
-    // @PostMapping(value = "/product-images")
-    // @CrossOrigin(origins = "*")
-    // public ResponseEntity<List<String>> generateProductImagesFromDiffusion(@RequestBody List<String> productIds) {
-    //     List<String> productImages = Optional.ofNullable(productService.generateProductImages(productIds)).orElseThrow(() -> {
-    //         log.error("Unable to fetch product images");
-    //         return new ProductsNotFoundException("Unable to fetch product images");
-    //     });
-    //     return ResponseEntity.ok(productImages);
-    // }
 }
