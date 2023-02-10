@@ -3,15 +3,12 @@ package com.microsoft.gbb.reddog.orderservice.service;
 import com.microsoft.gbb.reddog.orderservice.dto.CustomerOrderDto;
 import com.microsoft.gbb.reddog.orderservice.dto.OrderItemSummaryDto;
 import com.microsoft.gbb.reddog.orderservice.dto.OrderSummaryDto;
-import com.microsoft.gbb.reddog.orderservice.entity.Product;
-import com.microsoft.gbb.reddog.orderservice.exception.ProductsNotFoundException;
-// import com.microsoft.gbb.reddog.orderservice.messaging.TopicProducer;
+import com.microsoft.gbb.reddog.orderservice.dto.ProductDto;
 // import com.microsoft.gbb.reddog.orderservice.repository.CustomerOrderRepository;
 // import com.microsoft.gbb.reddog.orderservice.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-// import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -26,7 +23,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Slf4j
 @Service
-// @Transactional
 @Qualifier("customerorder")
 public class CustomerOrderService implements OrderService {
     // private final TopicProducer topicProducer;
@@ -54,7 +50,7 @@ public class CustomerOrderService implements OrderService {
     public OrderSummaryDto getOrderSummary(CustomerOrderDto order) {
         log.info("Creating order summary with order: {}", order.toString());
         // Retrieve all the items
-        List<Product> products = new ArrayList<>();/*Optional.ofNullable(productRepository.findAll()).orElseThrow(() -> {
+        List<ProductDto> products = new ArrayList<>();/*Optional.ofNullable(productRepository.findAll()).orElseThrow(() -> {
             log.error("Unable to fetch products");
             return new ProductsNotFoundException("Unable to fetch products");
         });*/
@@ -64,7 +60,7 @@ public class CustomerOrderService implements OrderService {
         AtomicReference<Float> orderTotal = new AtomicReference<>(0.0f);
         List<OrderItemSummaryDto> itemSummaries = new ArrayList<OrderItemSummaryDto>();
         order.getOrderItems().forEach(orderItem -> {
-            Product product = products.stream()
+            ProductDto product = products.stream()
                     .filter((p) -> Objects.equals(p.getProductId(), orderItem.getId()))
                     .findFirst()
                     .orElse(null);

@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderSummaryDto extends AbstractDto<String> {
+public class OrderSummaryDto{
 
     @JsonProperty("orderCompletedDate")
     private LocalDate orderCompletedDate;
