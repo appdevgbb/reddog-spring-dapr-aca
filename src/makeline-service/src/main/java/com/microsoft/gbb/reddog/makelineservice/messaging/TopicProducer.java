@@ -1,27 +1,23 @@
-// package com.microsoft.gbb.reddog.makelineservice.messaging;
+package com.microsoft.gbb.reddog.makelineservice.messaging;
 
-// import com.microsoft.gbb.reddog.makelineservice.dto.OrderSummaryDto;
-// import lombok.extern.slf4j.Slf4j;
-// import org.springframework.beans.factory.annotation.Value;
-// import org.springframework.kafka.core.KafkaTemplate;
-// import org.springframework.stereotype.Service;
+import com.microsoft.gbb.reddog.makelineservice.dto.OrderSummaryDto;
 
-// @Slf4j
-// @Service
-// public class TopicProducer {
+import io.dapr.client.DaprClient;
+import io.dapr.client.DaprClientBuilder;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
-//     @Value("${spring.kafka.topic.completed-orders-name}")
-//     private String topicName;
+@Slf4j
+@Service
+public class TopicProducer {
 
-//     private final KafkaTemplate<String, OrderSummaryDto> kafkaTemplate;
+    private final DaprClient client = (new DaprClientBuilder()).build();
+    private final String pubsubName = "reddog.pubsub";
+    private final String topicName = "ordercompleted";
 
-//     public TopicProducer(KafkaTemplate<String, OrderSummaryDto> kafkaTemplate) {
-//         this.kafkaTemplate = kafkaTemplate;
-//     }
+    public void send(OrderSummaryDto message){
+        log.info("Publishing:  {}", message);
+        client.publishEvent(pubsubName,topicName, message);
+    }
 
-//     public void send(OrderSummaryDto message){
-//         log.info("Publishing:  {}", message);
-//         kafkaTemplate.send(topicName, message);
-//     }
-
-// }
+}
