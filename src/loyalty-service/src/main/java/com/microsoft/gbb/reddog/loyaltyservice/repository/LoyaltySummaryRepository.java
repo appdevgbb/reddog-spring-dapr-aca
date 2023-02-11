@@ -1,31 +1,24 @@
-// package com.microsoft.gbb.reddog.loyaltyservice.repository;
+package com.microsoft.gbb.reddog.loyaltyservice.repository;
 
-// import com.microsoft.gbb.reddog.loyaltyservice.model.LoyaltySummary;
-// import lombok.RequiredArgsConstructor;
-// import org.springframework.data.redis.core.ReactiveRedisOperations;
-// import org.springframework.stereotype.Repository;
-// import reactor.core.publisher.Flux;
-// import reactor.core.publisher.Mono;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
-// @Repository
-// @RequiredArgsConstructor
-// public class LoyaltySummaryRepository {
-//     public static final String KEY = "loyaltysummary";
-//     private final ReactiveRedisOperations<String, LoyaltySummary> reactiveRedisOperations;
+import com.microsoft.gbb.reddog.loyaltyservice.model.LoyaltySummary;
 
-//     public Flux<LoyaltySummary> findAll(){
-//         return this.reactiveRedisOperations.opsForList().range(KEY, 0, -1);
-//     }
+import io.dapr.client.DaprClient;
+import io.dapr.client.DaprClientBuilder;
+import lombok.extern.slf4j.Slf4j;
 
-//     public Mono<LoyaltySummary> findById(String id) {
-//         return this.findAll().filter(p -> p.getLoyaltyId().equals(id)).last();
-//     }
+@Slf4j
+@Service
+@Qualifier("loyaltySummaryRepository")
+public class LoyaltySummaryRepository {
+    private final DaprClient client = (new DaprClientBuilder()).build();
+    private final String stateStoreName = "reddog.statestore.loyalty";
 
-//     public Mono<Long> save(LoyaltySummary loyaltySummary){
-//         return this.reactiveRedisOperations.opsForList().rightPush(KEY, loyaltySummary);
-//     }
+    public LoyaltySummary save(LoyaltySummary loyaltySummary){
+        client.saveState(stateStoreName, loyaltySummary.getLoyaltyId(), loyaltySummary).block();
+        return loyaltySummary;
+    }
 
-//     public Mono<Boolean> deleteAll() {
-//         return this.reactiveRedisOperations.opsForList().delete(KEY);
-//     }
-// }
+}

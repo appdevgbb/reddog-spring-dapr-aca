@@ -8,10 +8,13 @@ import java.util.List;
 /**
  * The type Order summary.
  */
+@Builder
 @Getter
 @Setter
-public class OrderSummaryDto {
-    
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderSummaryDto{
+
     @JsonProperty("orderCompletedDate")
     private long orderCompletedInstant;
 
@@ -52,6 +55,7 @@ public class OrderSummaryDto {
     @Override
     public String toString() {
         return "OrderSummaryDto{" +
+                "orderCompletedInstant=" + orderCompletedInstant +
                 ", loyaltyId='" + loyaltyId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

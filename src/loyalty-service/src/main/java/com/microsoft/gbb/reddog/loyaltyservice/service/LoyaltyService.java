@@ -2,7 +2,7 @@ package com.microsoft.gbb.reddog.loyaltyservice.service;
 
 import com.microsoft.gbb.reddog.loyaltyservice.dto.OrderSummaryDto;
 import com.microsoft.gbb.reddog.loyaltyservice.model.LoyaltySummary;
-// import com.microsoft.gbb.reddog.loyaltyservice.repository.LoyaltySummaryRepository;
+import com.microsoft.gbb.reddog.loyaltyservice.repository.LoyaltySummaryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +15,10 @@ import java.math.BigDecimal;
 @Component
 public class LoyaltyService {
 
-    //private final LoyaltySummaryRepository loyaltySummaryRepository;
-    // public LoyaltyService(LoyaltySummaryRepository loyaltySummaryRepository) {
-    //     this.loyaltySummaryRepository = loyaltySummaryRepository;
-    // }
+    private final LoyaltySummaryRepository loyaltySummaryRepository;
+    public LoyaltyService(LoyaltySummaryRepository loyaltySummaryRepository) {
+        this.loyaltySummaryRepository = loyaltySummaryRepository;
+    }
 
     public LoyaltySummary updateLoyalty(OrderSummaryDto orderSummary) {
         log.info("Updating loyalty for order: " + orderSummary);
@@ -35,8 +35,8 @@ public class LoyaltyService {
                 .pointTotal(loyaltyPoints)
                 .build();
         log.info("Saving loyalty summary: " + loyaltySummary);
-       // Long result = loyaltySummaryRepository.save(loyaltySummary).block();
-       // log.info("Loyalty summary saved: " + result);
+       var result = loyaltySummaryRepository.save(loyaltySummary);
+       log.info("Loyalty summary saved: " + result);
         return loyaltySummary;
     }
 

@@ -60,7 +60,7 @@ public class CustomerOrderService implements OrderService {
         List<OrderItemSummaryDto> itemSummaries = new ArrayList<OrderItemSummaryDto>();
         order.getOrderItems().forEach(orderItem -> {
             ProductDto product = products.stream()
-                    .filter((p) -> Objects.equals(p.getProductId(), orderItem.getId()))
+                    .filter((p) ->(long)p.getProductId() == orderItem.getId())
                     .findFirst()
                     .orElse(null);
             if (product == null) return;

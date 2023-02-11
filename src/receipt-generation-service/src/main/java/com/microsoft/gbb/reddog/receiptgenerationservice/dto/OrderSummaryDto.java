@@ -11,23 +11,12 @@ import java.util.List;
 /**
  * The type Order summary.
  */
+@Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderSummaryDto {
-    
-    public OrderSummaryDto(String loyaltyId, String firstName, String lastName, String orderId, String storeId, long orderDateInstant, List<OrderItemSummaryDto> orderItems, double orderTotal, String origin, String storeLatitude, String storeLongitude) {
-        this.loyaltyId = loyaltyId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.orderId = orderId;
-        this.storeId = storeId;
-        this.orderDateInstant = orderDateInstant;
-        this.orderItems = orderItems;
-        this.orderTotal = orderTotal;
-        this.origin = origin;
-        this.storeLatitude = storeLatitude;
-        this.storeLongitude = storeLongitude;
-    }
     @JsonProperty("orderCompletedDate")
     private long orderCompletedInstant;
 
