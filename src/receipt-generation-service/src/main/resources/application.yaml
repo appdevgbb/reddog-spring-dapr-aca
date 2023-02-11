@@ -5,13 +5,6 @@ spring:
     name: receipt-generation-service
   banner:
     location: static/banner.txt
-  cloud:
-    azure:
-      storage:
-        blob:
-          account-name: ${AZURESTORAGEACCOUNTNAME}
-          account-key: ${AZURESTORAGEACCOUNTKEY}
-          endpoint: ${AZURESTORAGEENDPOINT}
 eureka:
   client:
     register-with-eureka: false

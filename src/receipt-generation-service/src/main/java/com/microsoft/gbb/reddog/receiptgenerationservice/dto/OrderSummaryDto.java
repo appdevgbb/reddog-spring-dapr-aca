@@ -11,15 +11,25 @@ import java.util.List;
 /**
  * The type Order summary.
  */
-@Builder
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class OrderSummaryDto extends AbstractDto<String> {
-
+public class OrderSummaryDto {
+    
+    public OrderSummaryDto(String loyaltyId, String firstName, String lastName, String orderId, String storeId, long orderDateInstant, List<OrderItemSummaryDto> orderItems, double orderTotal, String origin, String storeLatitude, String storeLongitude) {
+        this.loyaltyId = loyaltyId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.orderId = orderId;
+        this.storeId = storeId;
+        this.orderDateInstant = orderDateInstant;
+        this.orderItems = orderItems;
+        this.orderTotal = orderTotal;
+        this.origin = origin;
+        this.storeLatitude = storeLatitude;
+        this.storeLongitude = storeLongitude;
+    }
     @JsonProperty("orderCompletedDate")
-    private LocalDate orderCompletedDate;
+    private long orderCompletedInstant;
 
     @JsonProperty("loyaltyId")
     private String loyaltyId;
@@ -36,9 +46,6 @@ public class OrderSummaryDto extends AbstractDto<String> {
     @JsonProperty("storeId")
     private String storeId;
 
-    @JsonProperty("orderDate")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime orderDate;
 
     @JsonProperty("orderDateInstant")
     private long orderDateInstant;
@@ -61,13 +68,11 @@ public class OrderSummaryDto extends AbstractDto<String> {
     @Override
     public String toString() {
         return "OrderSummaryDto{" +
-                "orderCompletedDate=" + orderCompletedDate +
                 ", loyaltyId='" + loyaltyId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", orderId=" + orderId +
                 ", storeId='" + storeId + '\'' +
-                ", orderDate='" + orderDate + '\'' +
                 ", orderItems=" + orderItems +
                 ", orderTotal=" + orderTotal +
                 ", origin='" + origin + '\'' +
