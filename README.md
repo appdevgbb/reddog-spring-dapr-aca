@@ -23,7 +23,7 @@ Dapr components:
 
 
 - [ ] Accounting service - pub sub, subcription on ordertopic and ordercompletedtopic, stores orders to DB (statestore?)
-- [ ] Loyalty service - subscribes to ordertopic and updates the loyalty for the loyaltyId using statestore - reddog.state.loyalty
+- [x] Loyalty service - subscribes to ordertopic and updates the loyalty for the loyaltyId using statestore - reddog.state.loyalty
 - [x] Makeline service - subscribes to ordertopic and stores to statestore (reddog.state.makeline), when completes an order (http), it publishes to ordercompletedtopic
 - [X] Order service - creating new order publishes an event to ordertopic, gets all products (no dapr)
 - [x] receipt generation service - subscribes to ordertopic and is using a binding to generate a local file with the receipt (can be changed to something else)

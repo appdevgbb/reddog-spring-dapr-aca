@@ -27,7 +27,7 @@ public class AccountingController {
     /// Pub sub on Order Topic, needs to save the order to state store
     @Topic(name = orderTopic, pubsubName = pubSubName)
     @PostMapping(value = "/orders")
-   // @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<List<OrderSummaryDto>> getAllInFlightOrders() {
         return ResponseEntity.ok(accountingService.findAllInflightOrders());
     }
@@ -35,13 +35,13 @@ public class AccountingController {
     /// Pub sub on Order Completed Topic, needs to mark the order as complete and save the order to state store
     @Topic(name = orderCompletedTopic, pubsubName = pubSubName)
     @PostMapping(value = "/orders/completed")
-    //@CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<List<OrderSummaryDto>> getAllCompletedOrders() {
         return ResponseEntity.ok(accountingService.findAllCompletedOrders());
     }
 
     @GetMapping(value = "/orders/{period}/{timeSpan}")
-   // @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<OrdersTimeSeries> getOrdersByPeriod(@PathVariable String period,
                                                                     @PathVariable String timeSpan,
                                                                     @RequestHeader("store-id") String storeId) {
@@ -49,7 +49,7 @@ public class AccountingController {
     }
 
     @GetMapping(value = "/orders/{period}/{timeStart}/{timeEnd}")
-   // @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<OrdersTimeSeries> getOrderCountWithinTimeInterval(@PathVariable String period,
                                                               @PathVariable String timeStart,
                                                                 @PathVariable String timeEnd,
@@ -58,7 +58,7 @@ public class AccountingController {
     }
 
     @GetMapping(value = "/orders/day")
-   // @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<List<ChartKeyValue<Long>>> getOrdersGroupedByDay(
             @RequestHeader(value = "store-id", required = false) String storeId) {
         return ResponseEntity.ok(accountingService.getOrderCountByDay(storeId));

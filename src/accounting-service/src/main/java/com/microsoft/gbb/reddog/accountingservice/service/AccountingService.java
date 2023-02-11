@@ -17,27 +17,27 @@ import java.util.List;
 @Service
 // @Transactional
 public class AccountingService {
-    //private final OrderSummaryRepository orderSummaryRepository;
+    private final OrderSummaryRepository orderSummaryRepository;
 
-    // public AccountingService(OrderSummaryRepository orderSummaryRepository) {
-    //     this.orderSummaryRepository = orderSummaryRepository;
-    // }
+    public AccountingService(OrderSummaryRepository orderSummaryRepository) {
+        this.orderSummaryRepository = orderSummaryRepository;
+    }
 
     public List<OrderSummaryDto> findAllInflightOrders() {
         log.info("Finding all inflight orders");
-        //return orderSummaryRepository.findAllInflightOrders();
+        return orderSummaryRepository.findAllInflightOrders();
         return new ArrayList<>();
     }
 
     public List<OrderSummaryDto> findAllCompletedOrders() {
         log.info("Finding all completed orders");
-        //return orderSummaryRepository.findAllCompletedOrders();
+        return orderSummaryRepository.findAllCompletedOrders();
         return new ArrayList<>();
     }
 
     public OrdersTimeSeries getOrderCountOverTime(String period, String timeSpan, String storeId) {
         log.info("Getting order count for the prior {} {}", timeSpan, period);
-        //return orderSummaryRepository.getOrderCountForThePastTimeSpan(period, timeSpan, storeId);
+        return orderSummaryRepository.getOrderCountForThePastTimeSpan(period, timeSpan, storeId);
         return new OrdersTimeSeries("storeId", new ArrayList<>());
     }
 
@@ -46,7 +46,7 @@ public class AccountingService {
                                                             String timeEnd,
                                                             String storeId) {
         log.info("Getting order count between {} and {}", timeStart, timeEnd);
-        //return orderSummaryRepository.getOrderCountWithinTimeInterval(period, timeStart, timeEnd, storeId);
+        return orderSummaryRepository.getOrderCountWithinTimeInterval(period, timeStart, timeEnd, storeId);
         return new OrdersTimeSeries("storeId", new ArrayList<>());
     }
 
@@ -64,7 +64,7 @@ public class AccountingService {
 
     public List<ChartKeyValue<Long>> getOrderCountByDay(String storeId) {
         log.info("Getting order count by day");
-        //return orderSummaryRepository.getOrderCountByDay(storeId);
+        return orderSummaryRepository.getOrderCountByDay(storeId);
         return new ArrayList<>();
     }
 }
