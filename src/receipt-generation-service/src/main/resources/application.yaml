@@ -5,32 +5,6 @@ spring:
     name: receipt-generation-service
   banner:
     location: static/banner.txt
-  kafka:
-    topic:
-      name: ${KAFKATOPICNAME}
-      group: ${KAFKATOPICGROUP:receipt-service}
-    bootstrap-servers: ${KAFKABOOTSTRAPSERVERS:localhost:9092}
-    security:
-      protocol: ${KAFKASECURITYPROTOCOL:PLAINTEXT}
-    consumer:
-      group-id: ${KAFKA_CONSUMER_GROUP_ID:receiptservice}
-      auto-offset-reset: latest
-      properties:
-        spring:
-          json:
-            trusted.packages: "*"
-            type.mapping: ordersummary:com.microsoft.gbb.reddog.receiptgenerationservice.dto.OrderSummaryDto
-        sasl:
-          jaas.config: ${KAFKASASLJAASCONFIG}
-          mechanism: ${KAFKASASLMECHANISM:PLAIN}
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-  cloud:
-    azure:
-      storage:
-        blob:
-          account-name: ${AZURESTORAGEACCOUNTNAME}
-          account-key: ${AZURESTORAGEACCOUNTKEY}
-          endpoint: ${AZURESTORAGEENDPOINT}
 eureka:
   client:
     register-with-eureka: false

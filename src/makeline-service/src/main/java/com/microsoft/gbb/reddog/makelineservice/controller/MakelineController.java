@@ -3,10 +3,12 @@ package com.microsoft.gbb.reddog.makelineservice.controller;
 import com.microsoft.gbb.reddog.makelineservice.dto.OrderSummaryDto;
 import com.microsoft.gbb.reddog.makelineservice.exception.SaveOrderException;
 import com.microsoft.gbb.reddog.makelineservice.service.MakelineService;
+
+import io.dapr.Topic;
+import io.dapr.client.domain.CloudEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,23 +23,16 @@ public class MakelineController {
         this.makelineService = makelineService;
     }
 
+    @Topic(name = "orders", pubsubName = "reddog.pubsub")
     @PostMapping(value = "/orders")
     @ResponseStatus(HttpStatus.CREATED)
     @CrossOrigin(origins = "*")
-    public ResponseEntity<OrderSummaryDto> addOrderToMakeLine(@RequestBody OrderSummaryDto orderSummary) {
+    public ResponseEntity<OrderSummaryDto> addOrderToMakeLine(@RequestBody CloudEvent<OrderSummaryDto> cloudEvent) {
+        var orderSummary = cloudEvent.getData();
         if (null == orderSummary) {
             throw new SaveOrderException("OrderSummary is empty");
         }
         return ResponseEntity.ok(makelineService.addOrderToMakeLine(orderSummary));
-    }
-
-    // TODO: Refactor with Avro schema in EH Schema Registry
-    @KafkaListener(id="makeline",
-            topics = "#{'${spring.kafka.topic.name}'}",
-            groupId = "#{'${spring.kafka.topic.group}'}")
-    public void addOrderToMakeLineAsync(OrderSummaryDto orderSummary) {
-        log.info("Received order to make line: " + orderSummary);
-        this.addOrderToMakeLine(orderSummary);
     }
 
     @GetMapping(value = "/orders/{storeId}")

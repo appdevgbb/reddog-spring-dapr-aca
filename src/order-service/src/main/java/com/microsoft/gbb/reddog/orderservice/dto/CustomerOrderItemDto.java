@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-public class CustomerOrderItemDto extends AbstractDto<String> {
+public class CustomerOrderItemDto {
     @JsonProperty("productId")
     private Long id;
 

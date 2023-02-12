@@ -3,12 +3,22 @@ package com.microsoft.gbb.reddog.orderservice.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-@AllArgsConstructor
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
-public class ProductDto extends AbstractDto<String>{
+public class ProductDto {
+    public ProductDto(double unitPrice, int productId, double unitCost, String imageUrl, String description, String productName, String categoryId) {
+        this.unitPrice = unitPrice;
+        this.productId = productId;
+        this.unitCost = unitCost;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.productName = productName;
+        this.categoryId = categoryId;
+    }
+    public ProductDto() {
+    }
+
     @JsonProperty("unitPrice")
     private double unitPrice;
 

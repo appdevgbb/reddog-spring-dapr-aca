@@ -1,11 +1,8 @@
 package com.microsoft.gbb.reddog.orderservice.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -16,10 +13,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderSummaryDto extends AbstractDto<String> {
+public class OrderSummaryDto{
 
     @JsonProperty("orderCompletedDate")
-    private LocalDate orderCompletedDate;
+    private long orderCompletedInstant;
 
     @JsonProperty("loyaltyId")
     private String loyaltyId;
@@ -36,9 +33,6 @@ public class OrderSummaryDto extends AbstractDto<String> {
     @JsonProperty("storeId")
     private String storeId;
 
-    @JsonProperty("orderDate")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime orderDate;
 
     @JsonProperty("orderDateInstant")
     private long orderDateInstant;
@@ -61,13 +55,12 @@ public class OrderSummaryDto extends AbstractDto<String> {
     @Override
     public String toString() {
         return "OrderSummaryDto{" +
-                "orderCompletedDate=" + orderCompletedDate +
+                "orderCompletedInstant=" + orderCompletedInstant +
                 ", loyaltyId='" + loyaltyId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", orderId=" + orderId +
                 ", storeId='" + storeId + '\'' +
-                ", orderDate='" + orderDate + '\'' +
                 ", orderItems=" + orderItems +
                 ", orderTotal=" + orderTotal +
                 ", origin='" + origin + '\'' +

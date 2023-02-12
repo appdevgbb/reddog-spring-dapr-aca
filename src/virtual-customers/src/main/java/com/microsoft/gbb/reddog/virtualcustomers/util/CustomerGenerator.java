@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CustomerGenerator {
     private static final Faker faker = new Faker();
-    public static final int TOTAL_NUM_OF_PRODUCTS_IN_DB = 52;
+    public static final int TOTAL_NUM_OF_PRODUCTS_IN_DB = 6;
     @Value("${data.MAX_UNIQUE_ITEMS_PER_ORDER}")
     private int MAX_UNIQUE_ITEMS_PER_ORDER;
 
@@ -57,6 +57,5 @@ public class CustomerGenerator {
         }
         return orderItems;
     }
-
 }
 

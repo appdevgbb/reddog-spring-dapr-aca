@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @Builder
 @AllArgsConstructor
-public class CustomerOrderDto extends AbstractDto<String> {
+public class CustomerOrderDto  {
     @JsonProperty("customerId")
     private Long customerId;
 
