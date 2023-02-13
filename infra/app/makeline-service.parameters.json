@@ -9,7 +9,7 @@
       "value": "${SERVICE_MAKELINE_NAME}"
     },
     "imageName": {
-      "value": "${SERVICE_MAKELINE_IMAGE_NAME}"
+      "value": "${SERVICE_MAKELINE_SERVICE_IMAGE_NAME}"
     },
     "applicationInsightsName": {
       "value": "${APPLICATIONINSIGHTS_NAME}"
@@ -19,6 +19,9 @@
     },
     "containerRegistryName": {
       "value": "${AZURE_CONTAINER_REGISTRY_NAME}"
+    },
+    "serviceBusNamespaceName": {
+      "value": "${SERVICEBUS_NAMESPACE_NAME}"
     }
   }
 }

@@ -2,7 +2,7 @@ param name string
 param location string = resourceGroup().location
 param tags object = {}
 
-resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
+resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
   name: name
   location: location
   tags: tags

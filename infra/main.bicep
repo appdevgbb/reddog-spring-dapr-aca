@@ -99,16 +99,16 @@ module serviceBus './core/messaging/servicebus.bicep' = {
   name: '${deployment().name}--servicebus'
   scope: rg
   params: {
-    serviceBusNamespaceName: !empty(serviceBusNamespaceName) ? serviceBusNamespaceName : '${abbrs.serviceBusNamespaceName}${resourceToken}'
+    name: !empty(serviceBusNamespaceName) ? serviceBusNamespaceName : '${abbrs.serviceBusNamespaceName}${resourceToken}'
     location: location
   }
 }
 
 module redis './core/database/redis/redis.bicep' = {
-  name: '${deployment().name}--redis'
+  name: '${deployment().name}--rediscache'
   scope: rg
   params: {
-    redisName: !empty(redisName) ? redisName : '${abbrs.redisName}${resourceToken}'
+    name: !empty(redisName) ? redisName : '${abbrs.redisName}${resourceToken}'
     location: location
   }
 }
@@ -180,7 +180,7 @@ module orderService './app/order-service.bicep' = {
   name: 'order-service'
   scope: rg
   params: {
-    name: !empty(orderServiceContainerAppName) ? orderServiceContainerAppName : '${abbrs.appContainerApps}order-service-${resourceToken}'
+    name: !empty(orderServiceContainerAppName) ? orderServiceContainerAppName : '${abbrs.appContainerApps}order-${resourceToken}'
     location: location
     imageName: orderServiceImageName
     applicationInsightsName: monitoring.outputs.applicationInsightsName
@@ -198,7 +198,7 @@ module makeLineService './app/makeline-service.bicep' = {
   name: 'makeline-service'
   scope: rg
   params: {
-    name: !empty(makelineServiceContainerAppName) ? makelineServiceContainerAppName : '${abbrs.appContainerApps}makeline-service-${resourceToken}'
+    name: !empty(makelineServiceContainerAppName) ? makelineServiceContainerAppName : '${abbrs.appContainerApps}makeline-${resourceToken}'
     location: location
     imageName: makelineServiceImageName
     applicationInsightsName: monitoring.outputs.applicationInsightsName
@@ -219,7 +219,7 @@ module loyaltyService './app/loyalty-service.bicep' = {
   name: 'loyalty-service'
   scope: rg
   params: {
-    name: !empty(loyaltyServiceContainerAppName) ? loyaltyServiceContainerAppName : '${abbrs.appContainerApps}loyalty-service-${resourceToken}'
+    name: !empty(loyaltyServiceContainerAppName) ? loyaltyServiceContainerAppName : '${abbrs.appContainerApps}loyalty-${resourceToken}'
     location: location
     imageName: loyaltyServiceImageName
     applicationInsightsName: monitoring.outputs.applicationInsightsName
@@ -239,7 +239,7 @@ module receiptGenerationService './app/receipt-generation-service.bicep' = {
   name: 'receipt-generation-service'
   scope: rg
   params: {
-    name: !empty(receiptGenerationServiceContainerAppName) ? receiptGenerationServiceContainerAppName : '${abbrs.appContainerApps}receipt-generation-service-${resourceToken}'
+    name: !empty(receiptGenerationServiceContainerAppName) ? receiptGenerationServiceContainerAppName : '${abbrs.appContainerApps}receipt-${resourceToken}'
     location: location
     imageName: receiptGenerationServiceImageName
     applicationInsightsName: monitoring.outputs.applicationInsightsName
@@ -259,7 +259,7 @@ module accountingService './app/accounting-service.bicep' = {
   name: 'accounting-service'
   scope: rg
   params: {
-    name: !empty(accountingServiceContainerAppName) ? accountingServiceContainerAppName : '${abbrs.appContainerApps}accounting-service-${resourceToken}'
+    name: !empty(accountingServiceContainerAppName) ? accountingServiceContainerAppName : '${abbrs.appContainerApps}accounting-${resourceToken}'
     location: location
     imageName: accountingServiceImageName
     applicationInsightsName: monitoring.outputs.applicationInsightsName
@@ -332,8 +332,9 @@ output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
 output REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
 
-output SERVICE_ACCOUNTING_IMAGE_NAME string = accountingService.outputs.SERVICE_ACCOUNTING_IMAGE_NAME
-output SERVICE_LOYALTY_IMAGE_NAME string = loyaltyService.outputs.SERVICE_LOYALTY_IMAGE_NAME
-output SERVICE_MAKELINE_IMAGE_NAME string = makeLineService.outputs.SERVICE_MAKELINE_IMAGE_NAME
-output SERVICE_ORDER_IMAGE_NAME string = orderService.outputs.SERVICE_ORDER_IMAGE_NAME
-output SERVICE_RECEIPT_GENERATION_IMAGE_NAME string = receiptGenerationService.outputs.SERVICE_RECEIPT_GENERATION_IMAGE_NAME
+output SERVICEBUS_NAMESPACE_NAME string = serviceBus.outputs.sbName
+output SERVICE_ACCOUNTING_NAME string = accountingService.outputs.SERVICE_ACCOUNTING_NAME
+output SERVICE_LOYALTY_NAME string = loyaltyService.outputs.SERVICE_LOYALTY_NAME
+output SERVICE_MAKELINE_NAME string = makeLineService.outputs.SERVICE_MAKELINE_NAME
+output SERVICE_ORDER_NAME string = orderService.outputs.SERVICE_ORDER_NAME
+output SERVICE_RECEIPT_GENERATION_NAME string = receiptGenerationService.outputs.SERVICE_RECEIPT_GENERATION_NAME

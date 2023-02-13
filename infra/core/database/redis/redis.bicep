@@ -3,13 +3,16 @@ param location string = resourceGroup().location
 param tags object = {}
 
 
-resource redis 'Microsoft.Cache/redisEnterprise@2022-01-01' = {
+resource redis 'Microsoft.Cache/redis@2022-06-01' = {
   name: name
   location: location
   tags: tags
-  sku: {
-    capacity: 2
-    name: 'Enterprise_E10'
+  properties:{
+    sku: {
+      name: 'Standard'
+      family: 'C'
+      capacity: 1
+    }
   }
 }
 

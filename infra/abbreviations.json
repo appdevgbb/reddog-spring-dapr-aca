@@ -133,5 +133,5 @@
     "webSitesFunctions": "func-",
     "webStaticSites": "stapp-",
     "serviceBusNamespaceName": "sb-",
-    "redisName":"rd-"
+    "redisName":"redis-"
 }

@@ -79,4 +79,3 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 output SERVICE_RECEIPT_GENERATION_IDENTITY_PRINCIPAL_ID string = app.outputs.identityPrincipalId
 output SERVICE_RECEIPT_GENERATION_NAME string = app.outputs.name
 output SERVICE_RECEIPT_GENERATION_URI string = app.outputs.uri
-output SERVICE_RECEIPT_GENERATION_IMAGE_NAME string = app.outputs.imageName
