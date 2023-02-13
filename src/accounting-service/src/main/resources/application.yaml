@@ -5,6 +5,12 @@ spring:
     import: optional:classpath:.env[.properties]
   banner:
     location: static/banner.txt
+cosmos:
+  queryMetricsEnabled: 'true'
+  key: ${AZURECOSMOSDBKEY}
+  secondaryKey: ${AZURECOSMOSDBSECONDARYKEY}
+  databaseName: ${AZURECOSMOSDBDATABASENAME}
+  uri: ${AZURECOSMOSDBURI}
 eureka:
   client:
     register-with-eureka: false
