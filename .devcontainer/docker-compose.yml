@@ -5,11 +5,14 @@ services:
       context: .
       dockerfile: Dockerfile
     init: true
+    network_mode: service:cosmos
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ..:/workspace:cached
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
+    depends_on:
+      - cosmos
   storage:
     container_name: azurite
     image: mcr.microsoft.com/azure-storage/azurite:latest
