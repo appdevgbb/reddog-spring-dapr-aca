@@ -1,9 +1,11 @@
-param serviceBusNamespaceName string
-param location string
+param name string
+param location string = resourceGroup().location
+param tags object = {}
 
-resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
-  name: serviceBusNamespaceName
+resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
+  name: name
   location: location
+  tags: tags
   sku: {
     name: 'Standard'
     tier: 'Standard'
@@ -11,5 +13,5 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
   }
 }
 
-output sbName string = serviceBusNamespaceName
+output sbName string = name
 output rootConnectionString string = listKeys('${serviceBus.id}/AuthorizationRules/RootManageSharedAccessKey', serviceBus.apiVersion).primaryConnectionString

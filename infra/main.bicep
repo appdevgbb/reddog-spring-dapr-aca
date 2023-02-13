@@ -9,32 +9,39 @@ param environmentName string
 @description('Primary location for all resources')
 param location string
 
-param apiContainerAppName string = ''
-param applicationInsightsDashboardName string = ''
 param applicationInsightsName string = ''
 param containerAppsEnvironmentName string = ''
 param containerRegistryName string = ''
 param cosmosAccountName string = ''
 param cosmosDatabaseName string = ''
-param keyVaultName string = ''
 param logAnalyticsName string = ''
 param resourceGroupName string = ''
-param apimServiceName string = ''
+param storageAccountName string = ''
+param serviceBusNamespaceName string = ''
+param redisName string = ''
 
-@description('Flag to use Azure API Management to mediate the calls between the Web frontend and the backend API')
-param useAPIM bool = false
 
-@description('Id of the user or app to assign application roles')
-param principalId string = ''
+@description('The image name for the order service')
+param orderServiceImageName string = ''
+param orderServiceContainerAppName string = ''
 
-@description('The image name for the api service')
-param apiImageName string = ''
+@description('The image name for the makeline service')
+param makelineServiceImageName string = ''
+param makelineServiceContainerAppName string = ''
 
-@description('The image name for the web service')
-param webImageName string = ''
+@description('The image name for the loyalty service')
+param loyaltyServiceImageName string = ''
+param loyaltyServiceContainerAppName string = ''
 
-@description('The base URL used by the web service for sending API requests')
-param webApiBaseUrl string = ''
+@description('The image name for the receipt generation service')
+param receiptGenerationServiceImageName string = ''
+param receiptGenerationServiceContainerAppName string = ''
+
+
+@description('The image name for the accounting service')
+param accountingServiceImageName string = ''
+param accountingServiceContainerAppName string = ''
+
 
 var abbrs = loadJsonContent('./abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
@@ -60,32 +67,6 @@ module containerApps './core/host/container-apps.bicep' = {
   }
 }
 
-
-// Api backend
-module api './app/api.bicep' = {
-  name: 'api'
-  scope: rg
-  params: {
-    name: !empty(apiContainerAppName) ? apiContainerAppName : '${abbrs.appContainerApps}api-${resourceToken}'
-    location: location
-    imageName: apiImageName
-    applicationInsightsName: monitoring.outputs.applicationInsightsName
-    containerAppsEnvironmentName: containerApps.outputs.environmentName
-    containerRegistryName: containerApps.outputs.registryName
-    keyVaultName: keyVault.outputs.name
-  }
-}
-
-// Give the API access to KeyVault
-module apiKeyVaultAccess './core/security/keyvault-access.bicep' = {
-  name: 'api-keyvault-access'
-  scope: rg
-  params: {
-    keyVaultName: keyVault.outputs.name
-    principalId: api.outputs.SERVICE_API_IDENTITY_PRINCIPAL_ID
-  }
-}
-
 // The application database
 module cosmos './app/db.bicep' = {
   name: 'cosmos'
@@ -95,21 +76,11 @@ module cosmos './app/db.bicep' = {
     databaseName: cosmosDatabaseName
     location: location
     tags: tags
-    keyVaultName: keyVault.outputs.name
   }
 }
 
-// Store secrets in a keyvault
-module keyVault './core/security/keyvault.bicep' = {
-  name: 'keyvault'
-  scope: rg
-  params: {
-    name: !empty(keyVaultName) ? keyVaultName : '${abbrs.keyVaultVaults}${resourceToken}'
-    location: location
-    tags: tags
-    principalId: principalId
-  }
-}
+
+
 
 // Monitor application with Azure Monitor
 module monitoring './core/monitor/monitoring.bicep' = {
@@ -120,21 +91,232 @@ module monitoring './core/monitor/monitoring.bicep' = {
     tags: tags
     logAnalyticsName: !empty(logAnalyticsName) ? logAnalyticsName : '${abbrs.operationalInsightsWorkspaces}${resourceToken}'
     applicationInsightsName: !empty(applicationInsightsName) ? applicationInsightsName : '${abbrs.insightsComponents}${resourceToken}'
-    applicationInsightsDashboardName: !empty(applicationInsightsDashboardName) ? applicationInsightsDashboardName : '${abbrs.portalDashboards}${resourceToken}'
   }
 }
 
-// Creates Azure API Management (APIM) service to mediate the requests between the frontend and the backend API
-module apim './core/gateway/apim.bicep' = if (useAPIM) {
-  name: 'apim-deployment'
+
+module serviceBus './core/messaging/servicebus.bicep' = {
+  name: '${deployment().name}--servicebus'
   scope: rg
   params: {
-    name: !empty(apimServiceName) ? apimServiceName : '${abbrs.apiManagementService}${resourceToken}'
+    serviceBusNamespaceName: !empty(serviceBusNamespaceName) ? serviceBusNamespaceName : '${abbrs.serviceBusNamespaceName}${resourceToken}'
     location: location
-    tags: tags
-    applicationInsightsName: monitoring.outputs.applicationInsightsName
   }
 }
+
+module redis './core/database/redis/redis.bicep' = {
+  name: '${deployment().name}--redis'
+  scope: rg
+  params: {
+    redisName: !empty(redisName) ? redisName : '${abbrs.redisName}${resourceToken}'
+    location: location
+  }
+}
+
+module storage './core/storage/storage-account.bicep' = {
+  name: 'storage'
+  scope: rg
+  params: {
+      name: !empty(storageAccountName) ? storageAccountName : '${abbrs.storageStorageAccounts}${resourceToken}'
+      location: location
+      tags: tags
+      containers: [
+        {
+          name: 'receipts'
+        }
+      ]
+  }
+}
+
+module daprBindingReceipt './core/dapr-components/binding-receipt.bicep' = {
+  name: '${deployment().name}--dapr-binding-receipt'
+  scope: rg
+  params: {
+    containerAppsEnvName: containerApps.outputs.environmentName
+    storageAccountName: storage.outputs.name
+  }
+}
+
+module daprBindingVirtualWorker './core/dapr-components/binding-virtualworker.bicep' = {
+  name: '${deployment().name}--dapr-binding-virtualworker'
+  scope: rg
+  params: {
+    containerAppsEnvName: containerApps.outputs.environmentName
+  }
+}
+
+module daprPubsub './core/dapr-components/pubsub.bicep' = {
+  name: '${deployment().name}--dapr-pubsub'
+  scope: rg
+  params: {
+    containerAppsEnvName: containerApps.outputs.environmentName
+    serviceBusNamespaceName: serviceBus.outputs.sbName
+  }
+}
+
+module daprStateLoyalty './core/dapr-components/state-loyalty.bicep' = {
+  name: '${deployment().name}--dapr-state-loyalty'
+  scope: rg
+  params: {
+    containerAppsEnvName: containerApps.outputs.environmentName
+    cosmosAccountName: cosmos.outputs.accountName
+    cosmosDatabaseName: cosmos.outputs.databaseName
+    cosmosCollectionName: cosmos.outputs.collectionName
+  }
+}
+
+module daprStateMakeline './core/dapr-components/state-makeline.bicep' = {
+  name: '${deployment().name}--dapr-state-makeline'
+  scope: rg
+  params: {
+    containerAppsEnvName: containerApps.outputs.environmentName
+    redisName: redis.outputs.redisName
+  }
+}
+
+
+// Order service backend
+module orderService './app/order-service.bicep' = {
+  name: 'order-service'
+  scope: rg
+  params: {
+    name: !empty(orderServiceContainerAppName) ? orderServiceContainerAppName : '${abbrs.appContainerApps}order-service-${resourceToken}'
+    location: location
+    imageName: orderServiceImageName
+    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    containerAppsEnvironmentName: containerApps.outputs.environmentName
+    containerRegistryName: containerApps.outputs.registryName
+  }
+  dependsOn: [
+    serviceBus
+    daprPubsub
+  ]
+}
+
+// Makeline service backend
+module makeLineService './app/makeline-service.bicep' = {
+  name: 'makeline-service'
+  scope: rg
+  params: {
+    name: !empty(makelineServiceContainerAppName) ? makelineServiceContainerAppName : '${abbrs.appContainerApps}makeline-service-${resourceToken}'
+    location: location
+    imageName: makelineServiceImageName
+    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    containerAppsEnvironmentName: containerApps.outputs.environmentName
+    containerRegistryName: containerApps.outputs.registryName
+    serviceBusNamespaceName: serviceBus.outputs.sbName
+  }
+  dependsOn: [
+    serviceBus
+    redis
+    daprPubsub
+    daprStateMakeline
+  ]
+}
+
+// Loyalty service backend
+module loyaltyService './app/loyalty-service.bicep' = {
+  name: 'loyalty-service'
+  scope: rg
+  params: {
+    name: !empty(loyaltyServiceContainerAppName) ? loyaltyServiceContainerAppName : '${abbrs.appContainerApps}loyalty-service-${resourceToken}'
+    location: location
+    imageName: loyaltyServiceImageName
+    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    containerAppsEnvironmentName: containerApps.outputs.environmentName
+    containerRegistryName: containerApps.outputs.registryName
+    serviceBusNamespaceName: serviceBus.outputs.sbName
+  }
+  dependsOn: [
+    serviceBus
+    daprPubsub
+    daprStateLoyalty
+  ]
+}
+
+// Loyalty service backend
+module receiptGenerationService './app/receipt-generation-service.bicep' = {
+  name: 'receipt-generation-service'
+  scope: rg
+  params: {
+    name: !empty(receiptGenerationServiceContainerAppName) ? receiptGenerationServiceContainerAppName : '${abbrs.appContainerApps}receipt-generation-service-${resourceToken}'
+    location: location
+    imageName: receiptGenerationServiceImageName
+    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    containerAppsEnvironmentName: containerApps.outputs.environmentName
+    containerRegistryName: containerApps.outputs.registryName
+    serviceBusNamespaceName: serviceBus.outputs.sbName
+  }
+  dependsOn: [
+    serviceBus
+    daprPubsub
+    daprBindingReceipt
+  ]
+}
+
+// Accounting service backend
+module accountingService './app/accounting-service.bicep' = {
+  name: 'accounting-service'
+  scope: rg
+  params: {
+    name: !empty(accountingServiceContainerAppName) ? accountingServiceContainerAppName : '${abbrs.appContainerApps}accounting-service-${resourceToken}'
+    location: location
+    imageName: accountingServiceImageName
+    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    containerAppsEnvironmentName: containerApps.outputs.environmentName
+    containerRegistryName: containerApps.outputs.registryName
+    serviceBusNamespaceName: serviceBus.outputs.sbName
+  }
+  dependsOn: [
+    serviceBus
+    daprPubsub
+  ]
+}
+
+// module virtualWorkerModule 'modules/container-apps/virtual-worker.bicep' = {
+//   name: '${deployment().name}--virtual-worker'
+//   dependsOn: [
+//     makeLineServiceModule
+//     daprBindingVirtualWorker
+//   ]
+//   params: {
+//     location: location
+//     containerAppsEnvName: containerAppsEnvModule.outputs.name
+//   }
+// }
+
+
+
+
+// module virtualCustomerModule 'modules/container-apps/virtual-customer.bicep' = {
+//   name: '${deployment().name}--virtual-customer'
+//   dependsOn: [
+//     orderServiceModule
+//     makeLineServiceModule
+//     receiptGenerationServiceModule
+//     loyaltyServiceModule
+//     accountingServiceModule
+//   ]
+//   params: {
+//     location: location
+//     containerAppsEnvName: containerAppsEnvModule.outputs.name
+//   }
+// }
+
+
+// module uiModule 'modules/container-apps/ui.bicep' = {
+//   name: '${deployment().name}--ui'
+//   dependsOn: [
+//     makeLineServiceModule
+//     accountingServiceModule
+//   ]
+//   params: {
+//     location: location
+//     containerAppsEnvName: containerAppsEnvModule.outputs.name
+//     minReplicas: keepUiAppUp ? 1 : 0
+//   }
+// }
+
 
 // Data outputs
 output AZURE_COSMOS_CONNECTION_STRING_KEY string = cosmos.outputs.connectionStringKey
@@ -146,10 +328,12 @@ output APPLICATIONINSIGHTS_NAME string = monitoring.outputs.applicationInsightsN
 output AZURE_CONTAINER_ENVIRONMENT_NAME string = containerApps.outputs.environmentName
 output AZURE_CONTAINER_REGISTRY_ENDPOINT string = containerApps.outputs.registryLoginServer
 output AZURE_CONTAINER_REGISTRY_NAME string = containerApps.outputs.registryName
-output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
-output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
 output REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
-output SERVICE_API_NAME string = api.outputs.SERVICE_API_NAME
-output USE_APIM bool = useAPIM
+
+output SERVICE_ACCOUNTING_IMAGE_NAME string = accountingService.outputs.SERVICE_ACCOUNTING_IMAGE_NAME
+output SERVICE_LOYALTY_IMAGE_NAME string = loyaltyService.outputs.SERVICE_LOYALTY_IMAGE_NAME
+output SERVICE_MAKELINE_IMAGE_NAME string = makeLineService.outputs.SERVICE_MAKELINE_IMAGE_NAME
+output SERVICE_ORDER_IMAGE_NAME string = orderService.outputs.SERVICE_ORDER_IMAGE_NAME
+output SERVICE_RECEIPT_GENERATION_IMAGE_NAME string = receiptGenerationService.outputs.SERVICE_RECEIPT_GENERATION_IMAGE_NAME

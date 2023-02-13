@@ -2,27 +2,27 @@ yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/
 
 name: reddog-spring-dapr
 services:
-  accounting-service:
+  accounting:
     project: ./src/accounting-service
     module: app/accounting-service
     language: java
     host: containerapp
-  loyalty-service:
+  loyalty:
     project: ./src/loyalty-service
     module: app/loyalty-service
     language: java
     host: containerapp
-  makeline-service:
+  makeline:
     project: ./src/makeline-service
     module: app/makeline-service
     language: java
     host: containerapp
-  order-service:
+  order:
     project: ./src/order-service
     module: app/order-service
     language: java
     host: containerapp
-  receipt-generation-service:
+  receipt-generation:
     project: ./src/receipt-generation-service
     module: app/receipt-generation-service
     language: java
