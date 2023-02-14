@@ -8,6 +8,7 @@ param containerRegistryName string
 param imageName string = ''
 param serviceName string = 'accounting-service'
 param serviceBusNamespaceName string
+param cosmosAccountName string
 
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
   name: serviceBusNamespaceName
@@ -16,6 +17,10 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existin
 resource serviceBusAuthRules 'Microsoft.ServiceBus/namespaces/AuthorizationRules@2022-01-01-preview' existing = {
   name: 'RootManageSharedAccessKey'
   parent: serviceBus
+}
+
+resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' existing = {
+  name: cosmosAccountName
 }
 
 var scaleRules = [
@@ -67,6 +72,22 @@ module app '../core/host/container-app.bicep' = {
       {
         name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
         value: applicationInsights.properties.ConnectionString
+      }
+      {
+        name: 'AZURECOSMOSDBKEY'
+        value: cosmosAccount.listKeys().primaryMasterKey
+      }
+      {
+        name: 'AZURECOSMOSDBSECONDARYKEY'
+        value: cosmosAccount.listKeys().secondaryMasterKey
+      }
+      {
+        name: 'AZURECOSMOSDBDATABASENAME'
+        value: 'accounting'
+      }
+      {
+        name: 'AZURECOSMOSDBURI'
+        value: cosmosAccount.properties.documentEndpoint
       }
     ]
     imageName: !empty(imageName) ? imageName : 'nginx:latest'

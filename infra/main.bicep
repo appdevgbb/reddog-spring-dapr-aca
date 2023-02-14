@@ -46,6 +46,13 @@ param accountingServiceContainerAppName string = ''
 param virtualWorkerImageName string = ''
 param virtualWorkerContainerAppName string = ''
 
+@description('The image name for the virtual customer')
+param virtualCustomerImageName string = ''
+param virtualCustomerContainerAppName string = ''
+
+
+
+
 
 var abbrs = loadJsonContent('./abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
@@ -283,6 +290,7 @@ module accountingService './app/accounting-service.bicep' = {
     containerAppsEnvironmentName: containerApps.outputs.environmentName
     containerRegistryName: containerApps.outputs.registryName
     serviceBusNamespaceName: serviceBus.outputs.sbName
+    cosmosAccountName: cosmos.outputs.accountName
   }
   dependsOn: [
     serviceBus
@@ -308,24 +316,22 @@ module virtualWorker './app/virtual-worker.bicep' = {
   ]
 }
 
-
-
-
-// module virtualCustomerModule 'modules/container-apps/virtual-customer.bicep' = {
-//   name: '${deployment().name}--virtual-customer'
-//   dependsOn: [
-//     orderServiceModule
-//     makeLineServiceModule
-//     receiptGenerationServiceModule
-//     loyaltyServiceModule
-//     accountingServiceModule
-//   ]
-//   params: {
-//     location: location
-//     containerAppsEnvName: containerAppsEnvModule.outputs.name
-//   }
-// }
-
+// Accounting service backend
+module virtualCustomer './app/virtual-customers.bicep' = {
+  name: 'virtual-customers'
+  scope: rg
+  params: {
+    name: !empty(virtualCustomerContainerAppName) ? virtualCustomerContainerAppName : '${abbrs.appContainerApps}virtualcustomer-${resourceToken}'
+    location: location
+    imageName: virtualCustomerImageName
+    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    containerAppsEnvironmentName: containerApps.outputs.environmentName
+    containerRegistryName: containerApps.outputs.registryName
+  }
+  dependsOn: [
+    orderService
+  ]
+}
 
 // module uiModule 'modules/container-apps/ui.bicep' = {
 //   name: '${deployment().name}--ui'
@@ -344,6 +350,7 @@ module virtualWorker './app/virtual-worker.bicep' = {
 // Data outputs
 output AZURE_COSMOS_CONNECTION_STRING_KEY string = cosmos.outputs.connectionStringKey
 output AZURE_COSMOS_DATABASE_NAME string = cosmos.outputs.databaseName
+output AZURE_COSMOS_ACCOUNT_NAME string = cosmos.outputs.accountName
 
 // App outputs
 output APPLICATIONINSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
@@ -362,3 +369,4 @@ output SERVICE_MAKELINE_NAME string = makeLineService.outputs.SERVICE_MAKELINE_N
 output SERVICE_ORDER_NAME string = orderService.outputs.SERVICE_ORDER_NAME
 output SERVICE_RECEIPT_GENERATION_NAME string = receiptGenerationService.outputs.SERVICE_RECEIPT_GENERATION_NAME
 output SERVICE_VIRTUAL_WORKER_NAME string = virtualWorker.outputs.SERVICE_VIRTUAL_WORKER_NAME
+output SERVICE_VIRTUAL_CUSTOMERS_NAME string = virtualCustomer.outputs.SERVICE_VIRTUAL_CUSTOMERS_NAME

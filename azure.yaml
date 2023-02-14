@@ -28,11 +28,11 @@ services:
     module: app/receipt-generation-service
     language: java
     host: containerapp
-  # virtual-customers:
-  #   project: ./src/virtual-customers
-  #   module: app/virtual-customers
-  #   language: java
-  #   host: containerapp
+  virtual-customers:
+    project: ./src/virtual-customers
+    module: app/virtual-customers
+    language: java
+    host: containerapp
   virtual-worker:
     project: ./src/virtual-worker
     module: app/virtual-worker

@@ -22,6 +22,9 @@
     },
     "serviceBusNamespaceName": {
       "value": "${SERVICEBUS_NAMESPACE_NAME}"
+    },
+    "cosmosAccountName": {
+      "value": "${AZURE_COSMOS_ACCOUNT_NAME}"
     }
   }
 }
