@@ -42,6 +42,10 @@ param receiptGenerationServiceContainerAppName string = ''
 param accountingServiceImageName string = ''
 param accountingServiceContainerAppName string = ''
 
+@description('The image name for the virtual worker')
+param virtualWorkerImageName string = ''
+param virtualWorkerContainerAppName string = ''
+
 
 var abbrs = loadJsonContent('./abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
@@ -62,6 +66,7 @@ module containerApps './core/host/container-apps.bicep' = {
     name: 'app'
     containerAppsEnvironmentName: !empty(containerAppsEnvironmentName) ? containerAppsEnvironmentName : '${abbrs.appManagedEnvironments}${resourceToken}'
     containerRegistryName: !empty(containerRegistryName) ? containerRegistryName : '${abbrs.containerRegistryRegistries}${resourceToken}'
+    appInsightsInstrumentationKey: monitoring.outputs.applicationInsightsInstrumentationKey
     location: location
     logAnalyticsWorkspaceName: monitoring.outputs.logAnalyticsWorkspaceName
   }
@@ -161,7 +166,18 @@ module daprStateLoyalty './core/dapr-components/state-loyalty.bicep' = {
     containerAppsEnvName: containerApps.outputs.environmentName
     cosmosAccountName: cosmos.outputs.accountName
     cosmosDatabaseName: cosmos.outputs.databaseName
-    cosmosCollectionName: cosmos.outputs.collectionName
+    cosmosCollectionName: cosmos.outputs.loyaltyContainerName
+  }
+}
+
+module daprStateProducts './core/dapr-components/state-products.bicep' = {
+  name: '${deployment().name}--dapr-state-products'
+  scope: rg
+  params: {
+    containerAppsEnvName: containerApps.outputs.environmentName
+    cosmosAccountName: cosmos.outputs.accountName
+    cosmosDatabaseName: cosmos.outputs.databaseName
+    cosmosCollectionName: cosmos.outputs.productsContainerName
   }
 }
 
@@ -190,6 +206,7 @@ module orderService './app/order-service.bicep' = {
   dependsOn: [
     serviceBus
     daprPubsub
+    daprStateProducts
   ]
 }
 
@@ -273,17 +290,23 @@ module accountingService './app/accounting-service.bicep' = {
   ]
 }
 
-// module virtualWorkerModule 'modules/container-apps/virtual-worker.bicep' = {
-//   name: '${deployment().name}--virtual-worker'
-//   dependsOn: [
-//     makeLineServiceModule
-//     daprBindingVirtualWorker
-//   ]
-//   params: {
-//     location: location
-//     containerAppsEnvName: containerAppsEnvModule.outputs.name
-//   }
-// }
+// Accounting service backend
+module virtualWorker './app/virtual-worker.bicep' = {
+  name: 'virtual-worker'
+  scope: rg
+  params: {
+    name: !empty(virtualWorkerContainerAppName) ? virtualWorkerContainerAppName : '${abbrs.appContainerApps}virtualworker-${resourceToken}'
+    location: location
+    imageName: virtualWorkerImageName
+    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    containerAppsEnvironmentName: containerApps.outputs.environmentName
+    containerRegistryName: containerApps.outputs.registryName
+  }
+  dependsOn: [
+    makeLineService
+    daprBindingVirtualWorker
+  ]
+}
 
 
 
@@ -338,3 +361,4 @@ output SERVICE_LOYALTY_NAME string = loyaltyService.outputs.SERVICE_LOYALTY_NAME
 output SERVICE_MAKELINE_NAME string = makeLineService.outputs.SERVICE_MAKELINE_NAME
 output SERVICE_ORDER_NAME string = orderService.outputs.SERVICE_ORDER_NAME
 output SERVICE_RECEIPT_GENERATION_NAME string = receiptGenerationService.outputs.SERVICE_RECEIPT_GENERATION_NAME
+output SERVICE_VIRTUAL_WORKER_NAME string = virtualWorker.outputs.SERVICE_VIRTUAL_WORKER_NAME

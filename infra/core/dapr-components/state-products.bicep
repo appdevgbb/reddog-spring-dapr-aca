@@ -12,7 +12,7 @@ resource cappsEnv 'Microsoft.App/managedEnvironments@2022-06-01-preview' existin
 }
 
 resource daprComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-06-01-preview' = {
-  name: 'reddog.statestore.loyalty'
+  name: 'reddog.statestore.products'
   parent: cappsEnv
   properties: {
     componentType: 'state.azure.cosmosdb'
@@ -42,7 +42,7 @@ resource daprComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-06
       }
     ]
     scopes: [
-      'loyalty-service'
+      'order-service'
     ]
   }
 }

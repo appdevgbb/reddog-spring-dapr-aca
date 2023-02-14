@@ -10,7 +10,7 @@ resource cappsEnv 'Microsoft.App/managedEnvironments@2022-06-01-preview' existin
 }
 
 resource daprComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-06-01-preview' = {
-  name: 'reddog.state.makeline'
+  name: 'reddog.statestore.orders'
   parent: cappsEnv
   properties: {
     componentType: 'state.redis'
@@ -36,7 +36,7 @@ resource daprComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-06
       }
     ]
     scopes: [
-      'make-line-service'
+      'makeline-service'
     ]
   }
 }

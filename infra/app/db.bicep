@@ -2,12 +2,19 @@ param accountName string
 param location string = resourceGroup().location
 param tags object = {}
 
-param collectionName string = 'reddog'
+param loyaltyContainerName string = 'loyalty'
+param productsContainerName string = 'products'
+
 
 param containers array = [
   {
-    name: collectionName
-    id: collectionName
+    name: loyaltyContainerName
+    id: loyaltyContainerName
+    partitionKey : '/id'
+  }
+  {
+    name: productsContainerName
+    id: productsContainerName
     partitionKey : '/id'
   }
 ]
@@ -32,4 +39,5 @@ output connectionStringKey string = cosmos.outputs.connectionStringKey
 output databaseName string = cosmos.outputs.databaseName
 output endpoint string = cosmos.outputs.endpoint
 output accountName string = cosmos.outputs.accountName
-output collectionName string = collectionName
+output loyaltyContainerName string = loyaltyContainerName
+output productsContainerName string = productsContainerName

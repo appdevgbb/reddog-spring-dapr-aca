@@ -3,7 +3,7 @@ param location string = resourceGroup().location
 param tags object = {}
 
 param logAnalyticsWorkspaceName string
-param applicationInsightsConnectionString string
+param appInsightsInstrumentationKey string
 
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
   name: name
@@ -13,9 +13,10 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2022-10-01'
     name: 'Consumption'
   }
   properties: {
-    daprAIConnectionString: applicationInsightsConnectionString
+    daprAIInstrumentationKey: appInsightsInstrumentationKey
     appLogsConfiguration: {
       destination: 'log-analytics'
+      
       logAnalyticsConfiguration: {
         customerId: logAnalyticsWorkspace.properties.customerId
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey

@@ -33,10 +33,10 @@ services:
   #   module: app/virtual-customers
   #   language: java
   #   host: containerapp
-  # virtual-worker:
-  #   project: ./src/virtual-worker
-  #   module: app/virtual-worker
-  #   language: java
-  #   host: containerapp
+  virtual-worker:
+    project: ./src/virtual-worker
+    module: app/virtual-worker
+    language: java
+    host: containerapp
     
   
