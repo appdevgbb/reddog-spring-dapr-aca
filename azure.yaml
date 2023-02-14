@@ -22,6 +22,7 @@ services:
     module: app/order-service
     language: java
     host: containerapp
+
   receipt-generation-service:
     project: ./src/receipt-generation-service
     module: app/receipt-generation-service
@@ -37,4 +38,5 @@ services:
     module: app/virtual-worker
     language: java
     host: containerapp
+    
   

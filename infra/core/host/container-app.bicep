@@ -6,17 +6,34 @@ param containerAppsEnvironmentName string = ''
 param containerName string = 'main'
 param containerRegistryName string = ''
 param env array = []
+param secrets array = []
 param external bool = true
 param imageName string
 param keyVaultName string = ''
 param managedIdentity bool = !empty(keyVaultName)
 param targetPort int = 80
+param activeRevisionsMode string = 'single'
+param enableDapr bool = false
+param daprAppId string = ''
+param daprAppPort int = 80
+
+param scaleRules array = []
+param minReplicas int = 0
+param maxReplicas int = 10
 
 @description('CPU cores allocated to a single container instance, e.g. 0.5')
 param containerCpuCoreCount string = '0.5'
 
 @description('Memory allocated to a single container instance, e.g. 1Gi')
 param containerMemory string = '1.0Gi'
+
+var combinedSecrets = union(secrets,
+[
+  {
+    name: 'registry-password'
+    value: containerRegistry.listCredentials().passwords[0].value
+  }
+])
 
 resource app 'Microsoft.App/containerApps@2022-03-01' = {
   name: name
@@ -26,18 +43,18 @@ resource app 'Microsoft.App/containerApps@2022-03-01' = {
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
     configuration: {
-      activeRevisionsMode: 'single'
+      activeRevisionsMode: activeRevisionsMode
       ingress: {
         external: external
         targetPort: targetPort
         transport: 'auto'
       }
-      secrets: [
-        {
-          name: 'registry-password'
-          value: containerRegistry.listCredentials().passwords[0].value
-        }
-      ]
+       dapr: (enableDapr) ? {
+          enabled: enableDapr
+          appId: daprAppId
+          appPort: daprAppPort
+       } : {}
+      secrets: combinedSecrets
       registries: [
         {
           server: '${containerRegistry.name}.azurecr.io'
@@ -47,6 +64,11 @@ resource app 'Microsoft.App/containerApps@2022-03-01' = {
       ]
     }
     template: {
+      scale: {
+        minReplicas: minReplicas
+        maxReplicas: maxReplicas
+        rules: scaleRules
+      }
       containers: [
         {
           image: imageName
