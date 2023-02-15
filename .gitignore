@@ -1,2 +1,3 @@
 .azure
 __blobstorage*
+**/applicationinsights.log

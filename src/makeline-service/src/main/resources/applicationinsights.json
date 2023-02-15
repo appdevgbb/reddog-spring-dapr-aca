@@ -7,9 +7,10 @@
       "cpuTriggeredSettings" : "diagnostic-profile",
       "memoryTriggeredSettings" : "diagnostic-profile",
       "manualTriggeredSettings" : "diagnostic-profile"
-    }
+    },
+    "captureControllerSpans": true
   },
   "role" : {
-    "name" : "reddog order service"
+    "name" : "reddog makeline service"
   }
 }
