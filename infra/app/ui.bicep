@@ -6,8 +6,25 @@ param applicationInsightsName string
 param containerAppsEnvironmentName string
 param containerRegistryName string
 param imageName string = ''
-param serviceName string = 'virtual-worker'
-param appPort int = 8706
+param serviceName string = 'ui'
+param appPort int = 3000
+param virtualCustomersUri string
+param ordersUri string
+param accountingUri string
+
+
+
+var scaleRules = [
+  {
+    name: 'http-rule'
+    http: {
+      metadata: {
+          concurrentRequests: '100'
+      }
+    }
+  }
+]
+
 
 module app '../core/host/container-app.bicep' = {
   name: '${serviceName}-container-app-module'
@@ -24,13 +41,29 @@ module app '../core/host/container-app.bicep' = {
         name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
         value: applicationInsights.properties.ConnectionString
       }
+      {
+        name: 'VIRTUAL_CUSTOMERS_URL'
+        value: virtualCustomersUri
+      }
+      {
+        name: 'ORDERS_URL'
+        value: ordersUri
+      }
+      {
+        name: 'ACCOUNTING_URL'
+        value: accountingUri
+      }
+      {
+        name: 'OPENAI_URL'
+        value: ''
+      }
     ]
     imageName: !empty(imageName) ? imageName : 'nginx:latest'
     targetPort: appPort
     enableDapr: true
     daprAppPort: appPort
     daprAppId: serviceName
-    minReplicas: 1
+    scaleRules: scaleRules
     external: true
   }
 }
@@ -39,6 +72,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
   name: applicationInsightsName
 }
 
-output SERVICE_VIRTUAL_WORKER_IDENTITY_PRINCIPAL_ID string = app.outputs.identityPrincipalId
-output SERVICE_VIRTUAL_WORKER_NAME string = app.outputs.name
-output SERVICE_VIRTUAL_WORKER_URI string = app.outputs.uri
+
+output SERVICE_UI_IDENTITY_PRINCIPAL_ID string = app.outputs.identityPrincipalId
+output SERVICE_UI_NAME string = app.outputs.name
+output SERVICE_UI_URI string = app.outputs.uri

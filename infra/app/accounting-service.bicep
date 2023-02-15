@@ -9,6 +9,7 @@ param imageName string = ''
 param serviceName string = 'accounting-service'
 param serviceBusNamespaceName string
 param cosmosAccountName string
+param appPort int = 8707
 
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
   name: serviceBusNamespaceName
@@ -57,6 +58,40 @@ var secrets = [
     value: serviceBusAuthRules.listKeys().primaryConnectionString
   }
 ]
+var probes = [
+  {
+    type: 'readiness'
+    httpGet: {
+      path: '/actuator/health/readiness'
+      port: appPort
+    }
+    timeoutSeconds: 10
+    failureThreshold: 10
+    periodSeconds: 10
+  }
+  {
+    type: 'liveness'
+    httpGet: {
+      path: '/actuator/health/liveness'
+      port: appPort
+    }
+    timeoutSeconds: 10
+    successThreshold: 1
+    failureThreshold: 10
+    periodSeconds: 10
+  }
+  {
+    type: 'startup'
+    httpGet: {
+      path: '/actuator/health/readiness'
+      port: appPort
+    }
+    timeoutSeconds: 10
+    failureThreshold: 6
+    periodSeconds: 10
+    initialDelaySeconds: 10
+  }
+]
 
 module app '../core/host/container-app.bicep' = {
   name: '${serviceName}-container-app-module'
@@ -91,13 +126,14 @@ module app '../core/host/container-app.bicep' = {
       }
     ]
     imageName: !empty(imageName) ? imageName : 'nginx:latest'
-    targetPort: 8707
+    targetPort: appPort
     enableDapr: true
-    daprAppPort: 8707
+    daprAppPort: appPort
     daprAppId: serviceName
     scaleRules: scaleRules
     secrets: secrets
     external: true
+    probes: probes
   }
 }
 

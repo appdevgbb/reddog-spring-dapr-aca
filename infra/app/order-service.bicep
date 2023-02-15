@@ -7,6 +7,42 @@ param containerAppsEnvironmentName string
 param containerRegistryName string
 param imageName string = ''
 param serviceName string = 'order-service'
+param appPort int = 8702
+
+var probes = [
+  {
+    type: 'readiness'
+    httpGet: {
+      path: '/actuator/health/readiness'
+      port: appPort
+    }
+    timeoutSeconds: 10
+    failureThreshold: 10
+    periodSeconds: 10
+  }
+  {
+    type: 'liveness'
+    httpGet: {
+      path: '/actuator/health/liveness'
+      port: appPort
+    }
+    timeoutSeconds: 10
+    successThreshold: 1
+    failureThreshold: 10
+    periodSeconds: 10
+  }
+  {
+    type: 'startup'
+    httpGet: {
+      path: '/actuator/health/readiness'
+      port: appPort
+    }
+    timeoutSeconds: 10
+    failureThreshold: 6
+    periodSeconds: 10
+    initialDelaySeconds: 10
+  }
+]
 
 module app '../core/host/container-app.bicep' = {
   name: '${serviceName}-container-app-module'
@@ -25,11 +61,12 @@ module app '../core/host/container-app.bicep' = {
       }
     ]
     imageName: !empty(imageName) ? imageName : 'nginx:latest'
-    targetPort: 8702
+    targetPort: appPort
     enableDapr: true
-    daprAppPort: 8702
+    daprAppPort: appPort
     daprAppId: serviceName
     external: true
+    probes: probes
   }
 }
 

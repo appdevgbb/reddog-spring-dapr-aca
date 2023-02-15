@@ -13,12 +13,6 @@ services:
     command: sleep infinity
     depends_on:
       - cosmos
-  storage:
-    container_name: azurite
-    image: mcr.microsoft.com/azure-storage/azurite:latest
-    restart: unless-stopped
-    volumes:
-      - storage-data:/data
   redis:
     image: redis:alpine
   zipkin:
@@ -28,20 +22,24 @@ services:
     command: ["./placement", "--port", "50006"]
     ports:
       - "50006:50006"
-  cosmos:
-    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
-    mem_limit: "3g"
-    cpu_count: 2
-    init: true
-    restart: unless-stopped
-    ports:
-      - "8081:8081"
-      - "10251:10251"
-      - "10252:10252"
-      - "10253:10253"
-      - "10254:10254"
-    environment:
-      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: "10"
-      AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true"
+  # cosmos:
+  #   image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+  #   mem_limit: "3g"
+  #   cpu_count: 2
+  #   init: true
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8081:8081"
+  #     - "10251:10251"
+  #     - "10252:10252"
+  #     - "10253:10253"
+  #     - "10254:10254"
+  #   environment:
+  #     AZURE_COSMOS_EMULATOR_PARTITION_COUNT: "10"
+  #     AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true"
+  #     #AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE: "cosmos"
+  #   volumes:
+  #     # Forwards the local Docker socket to the container.
+  #     - /var/run/docker.sock:/var/run/docker-host.sock
 volumes:
   storage-data:
