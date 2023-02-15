@@ -19,6 +19,7 @@ param resourceGroupName string = ''
 param storageAccountName string = ''
 param serviceBusNamespaceName string = ''
 param redisName string = ''
+param openAIAccountName string = ''
 
 
 @description('The image name for the order service')
@@ -50,7 +51,9 @@ param virtualWorkerContainerAppName string = ''
 param virtualCustomerImageName string = ''
 param virtualCustomerContainerAppName string = ''
 
-
+@description('The image name for the virtual customer')
+param uiImageName string = ''
+param uiContainerAppName string = ''
 
 
 
@@ -111,7 +114,7 @@ module serviceBus './core/messaging/servicebus.bicep' = {
   name: '${deployment().name}--servicebus'
   scope: rg
   params: {
-    name: !empty(serviceBusNamespaceName) ? serviceBusNamespaceName : '${abbrs.serviceBusNamespaceName}${resourceToken}'
+    name: !empty(serviceBusNamespaceName) ? serviceBusNamespaceName : '${abbrs.serviceBusNamespaces}${resourceToken}'
     location: location
   }
 }
@@ -120,7 +123,7 @@ module redis './core/database/redis/redis.bicep' = {
   name: '${deployment().name}--rediscache'
   scope: rg
   params: {
-    name: !empty(redisName) ? redisName : '${abbrs.redisName}${resourceToken}'
+    name: !empty(redisName) ? redisName : '${abbrs.cacheRedis}${resourceToken}'
     location: location
   }
 }
@@ -333,19 +336,36 @@ module virtualCustomer './app/virtual-customers.bicep' = {
   ]
 }
 
-// module uiModule 'modules/container-apps/ui.bicep' = {
-//   name: '${deployment().name}--ui'
-//   dependsOn: [
-//     makeLineServiceModule
-//     accountingServiceModule
-//   ]
+// Order service backend
+module ui './app/ui.bicep' = {
+  name: 'ui'
+  scope: rg
+  params: {
+    name: !empty(uiContainerAppName) ? uiContainerAppName : '${abbrs.appContainerApps}ui-${resourceToken}'
+    location: location
+    imageName: uiImageName
+    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    containerAppsEnvironmentName: containerApps.outputs.environmentName
+    containerRegistryName: containerApps.outputs.registryName
+    accountingUri: accountingService.outputs.SERVICE_ACCOUNTING_URI
+    virtualCustomersUri: virtualCustomer.outputs.SERVICE_VIRTUAL_CUSTOMERS_URI
+    ordersUri: orderService.outputs.SERVICE_ORDER_URI
+  }
+  dependsOn: [
+    accountingService
+    virtualCustomer
+    orderService
+  ]
+}
+
+// module openAI './core/ai/openai.bicep' = {
+//   name: '${deployment().name}--openai'
+//   scope: rg
 //   params: {
+//     openAIServiceName: !empty(openAIAccountName) ? openAIAccountName : '${abbrs.openAIAccountName}${resourceToken}'
 //     location: location
-//     containerAppsEnvName: containerAppsEnvModule.outputs.name
-//     minReplicas: keepUiAppUp ? 1 : 0
 //   }
 // }
-
 
 // Data outputs
 output AZURE_COSMOS_CONNECTION_STRING_KEY string = cosmos.outputs.connectionStringKey
@@ -370,3 +390,4 @@ output SERVICE_ORDER_NAME string = orderService.outputs.SERVICE_ORDER_NAME
 output SERVICE_RECEIPT_GENERATION_NAME string = receiptGenerationService.outputs.SERVICE_RECEIPT_GENERATION_NAME
 output SERVICE_VIRTUAL_WORKER_NAME string = virtualWorker.outputs.SERVICE_VIRTUAL_WORKER_NAME
 output SERVICE_VIRTUAL_CUSTOMERS_NAME string = virtualCustomer.outputs.SERVICE_VIRTUAL_CUSTOMERS_NAME
+output SERVICE_UI_NAME string = ui.outputs.SERVICE_UI_NAME

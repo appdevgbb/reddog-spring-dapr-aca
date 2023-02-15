@@ -5,7 +5,7 @@ import com.microsoft.gbb.reddog.accountingservice.dto.OrderSummaryDto;
 import com.microsoft.gbb.reddog.accountingservice.dto.OrdersTimeSeries;
 import com.microsoft.gbb.reddog.accountingservice.service.AccountingService;
 
-import io.dapr.Topic;
+// import io.dapr.Topic;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,25 +16,21 @@ import java.util.List;
 public class AccountingController {
 
     private final AccountingService accountingService;
-    private final String pubSubName = "reddog.pubsub";
-    private final String orderTopic = "orders";
-    private final String orderCompletedTopic = "ordercompleted";
+    // private final String pubSubName = "reddog.pubsub";
+    // private final String orderTopic = "orders";
+    // private final String orderCompletedTopic = "ordercompleted";
 
     public AccountingController(AccountingService accountingService) {
         this.accountingService = accountingService;
     }
 
-    /// Pub sub on Order Topic, needs to save the order to state store
-    @Topic(name = orderTopic, pubsubName = pubSubName)
-    @PostMapping(value = "/orders")
+    @GetMapping(value = "/orders")
     @CrossOrigin(origins = "*")
     public ResponseEntity<List<OrderSummaryDto>> getAllInFlightOrders() {
         return ResponseEntity.ok(accountingService.findAllInflightOrders());
     }
 
-    /// Pub sub on Order Completed Topic, needs to mark the order as complete and save the order to state store
-    @Topic(name = orderCompletedTopic, pubsubName = pubSubName)
-    @PostMapping(value = "/orders/completed")
+    @GetMapping(value = "/orders/completed")
     @CrossOrigin(origins = "*")
     public ResponseEntity<List<OrderSummaryDto>> getAllCompletedOrders() {
         return ResponseEntity.ok(accountingService.findAllCompletedOrders());
