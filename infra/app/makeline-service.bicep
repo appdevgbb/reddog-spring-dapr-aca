@@ -8,6 +8,7 @@ param containerRegistryName string
 param imageName string = ''
 param serviceName string = 'makeline-service'
 param serviceBusNamespaceName string
+param appPort int = 8704
 
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
   name: serviceBusNamespaceName
@@ -53,6 +54,41 @@ var secrets = [
   }
 ]
 
+var probes = [
+  {
+    type: 'readiness'
+    httpGet: {
+      path: '/actuator/health/readiness'
+      port: appPort
+    }
+    timeoutSeconds: 10
+    failureThreshold: 10
+    periodSeconds: 10
+  }
+  {
+    type: 'liveness'
+    httpGet: {
+      path: '/actuator/health/liveness'
+      port: appPort
+    }
+    timeoutSeconds: 10
+    successThreshold: 1
+    failureThreshold: 10
+    periodSeconds: 10
+  }
+  {
+    type: 'startup'
+    httpGet: {
+      path: '/actuator/health/readiness'
+      port: appPort
+    }
+    timeoutSeconds: 10
+    failureThreshold: 6
+    periodSeconds: 10
+    initialDelaySeconds: 10
+  }
+]
+
 module app '../core/host/container-app.bicep' = {
   name: '${serviceName}-container-app-module'
   params: {
@@ -70,13 +106,14 @@ module app '../core/host/container-app.bicep' = {
       }
     ]
     imageName: !empty(imageName) ? imageName : 'nginx:latest'
-    targetPort: 8704
+    targetPort: appPort
     enableDapr: true
-    daprAppPort: 8704
+    daprAppPort: appPort
     daprAppId: serviceName
     scaleRules: scaleRules
     secrets: secrets
     external: true
+    probes : probes
   }
 }
 

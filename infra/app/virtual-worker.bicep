@@ -7,6 +7,7 @@ param containerAppsEnvironmentName string
 param containerRegistryName string
 param imageName string = ''
 param serviceName string = 'virtual-worker'
+param appPort int = 8706
 
 module app '../core/host/container-app.bicep' = {
   name: '${serviceName}-container-app-module'
@@ -25,9 +26,9 @@ module app '../core/host/container-app.bicep' = {
       }
     ]
     imageName: !empty(imageName) ? imageName : 'nginx:latest'
-    targetPort: 8706
+    targetPort: appPort
     enableDapr: true
-    daprAppPort: 8706
+    daprAppPort: appPort
     daprAppId: serviceName
     minReplicas: 1
     external: true
