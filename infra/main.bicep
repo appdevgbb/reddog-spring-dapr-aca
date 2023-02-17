@@ -196,7 +196,9 @@ module daprStateMakeline './core/dapr-components/state-makeline.bicep' = {
   scope: rg
   params: {
     containerAppsEnvName: containerApps.outputs.environmentName
-    redisName: redis.outputs.redisName
+    cosmosAccountName: cosmos.outputs.accountName
+    cosmosDatabaseName: cosmos.outputs.databaseName
+    cosmosCollectionName: cosmos.outputs.ordersContainerName
   }
 }
 

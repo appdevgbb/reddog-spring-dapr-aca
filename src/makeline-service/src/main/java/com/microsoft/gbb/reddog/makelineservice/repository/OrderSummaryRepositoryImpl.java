@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -22,52 +21,52 @@ import org.springframework.stereotype.Service;
 @Service
 @Qualifier("orderSummaryRepository")
 public class OrderSummaryRepositoryImpl implements OrderSummaryRepository {
-    private final DaprClient client = (new DaprClientBuilder()).build();
-    private final DaprPreviewClient previewClient = (new DaprClientBuilder()).buildPreviewClient();
-    private final String stateStoreName = "reddog.statestore.orders";
+  private final DaprClient client = (new DaprClientBuilder()).build();
+  private final DaprPreviewClient previewClient = (new DaprClientBuilder()).buildPreviewClient();
+  private final String stateStoreName = "reddog.statestore.orders";
 
-    @Override
-    public OrderSummaryDto saveOrder(OrderSummaryDto orderSummary) {
-        client.saveState(stateStoreName, orderSummary.getOrderId(), orderSummary).block();
-        return orderSummary;
-    }
+  @Override
+  public OrderSummaryDto saveOrder(OrderSummaryDto orderSummary) {
+    client.saveState(stateStoreName, orderSummary.getOrderId(), orderSummary).block();
+    return orderSummary;
+  }
 
-    @Override
-    public ArrayList<OrderSummaryDto> getOrdersForStore(String storeId) {
-        return new ArrayList<>(findAllByStoreId(storeId));
-    }
+  @Override
+  public ArrayList<OrderSummaryDto> getOrdersForStore(String storeId) {
+    return new ArrayList<>(findAllByStoreId(storeId));
+  }
 
-    @Override
-    public List<OrderSummaryDto> findAllByStoreId(String storeId) {
-        return findByParam("storeId", storeId);
-    }
+  @Override
+  public List<OrderSummaryDto> findAllByStoreId(String storeId) {
+    return findByParam("storeId", storeId);
+  }
 
-    @Override
-    public OrderSummaryDto findByOrderIdAndStoreId(String orderId, String storeId) {
-        Query query = new Query()
+  @Override
+  public OrderSummaryDto findByOrderIdAndStoreId(String orderId, String storeId) {
+    Query query = new Query()
         .setFilter(new AndFilter()
-                      .addClause(new EqFilter<>("orderId", orderId))
-                      .addClause(new EqFilter<>("storeId", storeId)));
-      QueryStateRequest request = new QueryStateRequest(stateStoreName)
+            .addClause(new EqFilter<>("orderId", orderId))
+            .addClause(new EqFilter<>("storeId", storeId)));
+    QueryStateRequest request = new QueryStateRequest(stateStoreName)
         .setQuery(query);
 
-      QueryStateResponse<OrderSummaryDto> result = previewClient.queryState(request, OrderSummaryDto.class).block();
-      return result.getResults().get(0).getValue();
-    }
+    QueryStateResponse<OrderSummaryDto> result = previewClient.queryState(request, OrderSummaryDto.class).block();
+    return result.getResults().get(0).getValue();
+  }
 
-    @Override
-    public List<OrderSummaryDto> findByOrderId(String orderId) {
-        return findByParam("orderId", orderId);
-    }
+  @Override
+  public List<OrderSummaryDto> findByOrderId(String orderId) {
+    return findByParam("orderId", orderId);
+  }
 
-    private List<OrderSummaryDto> findByParam(String param, String id) {
-        Query query = new Query()
+  private List<OrderSummaryDto> findByParam(String param, String id) {
+    Query query = new Query()
         .setFilter(new EqFilter<>(param, id));
-      QueryStateRequest request = new QueryStateRequest(stateStoreName)
+    QueryStateRequest request = new QueryStateRequest(stateStoreName)
         .setQuery(query);
 
-      QueryStateResponse<OrderSummaryDto> result = previewClient.queryState(request, OrderSummaryDto.class).block();
-      return result.getResults().stream().map(r -> r.getValue()).toList();
-    }
+    QueryStateResponse<OrderSummaryDto> result = previewClient.queryState(request, OrderSummaryDto.class).block();
+    return result.getResults().stream().map(r -> r.getValue()).toList();
+  }
 
 }

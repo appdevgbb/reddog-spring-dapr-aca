@@ -52,6 +52,11 @@ public class OrderSummaryDto{
     @JsonProperty("storeLongitude")
     private String storeLongitude;
 
+    @JsonProperty("allHack")
+    private final String allHack = "0";
+    @JsonProperty("isCompleted")
+    private String isCompleted;
+
     @Override
     public String toString() {
         return "OrderSummaryDto{" +

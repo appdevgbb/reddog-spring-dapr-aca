@@ -26,6 +26,7 @@ public class MakelineService {
     
     public OrderSummaryDto addOrderToMakeLine(OrderSummaryDto orderSummary) {
         log.info("Adding order to make line {}", orderSummary.toString());
+        orderSummary.setIsCompleted("false");
         return orderSummaryRepository.saveOrder(orderSummary);
     }
 
@@ -38,6 +39,7 @@ public class MakelineService {
         log.info("Completing order for storeId: " + storeId + " orderId: " + orderId);
         OrderSummaryDto orderSummary = orderSummaryRepository.findByOrderIdAndStoreId(orderId, storeId);
         orderSummary.setOrderCompletedInstant(LocalDate.now().toEpochDay());
+        orderSummary.setIsCompleted("true");
         topicProducer.send(orderSummary);
         log.info("Order completed: " + orderSummary);
         return orderSummaryRepository.saveOrder(orderSummary);

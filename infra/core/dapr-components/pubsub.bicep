@@ -35,7 +35,7 @@ resource daprComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-06
     scopes: [
       'accounting-service'
       'loyalty-service'
-      'make-line-service'
+      'makeline-service'
       'order-service'
       'receipt-generation-service'
     ]
