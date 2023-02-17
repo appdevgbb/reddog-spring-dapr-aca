@@ -19,15 +19,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Container(containerName="accounting")
+@Container(containerName="orders")
 public class OrderSummaryDto extends AbstractDto<String> {
 
     @JsonProperty("orderCompletedDate")
     private LocalDate orderCompletedDate;
 
     @JsonProperty("loyaltyId")
-    @PartitionKey
     private String loyaltyId;
+
+    @JsonProperty("partitionKey")
+    @PartitionKey
+    private String partitionKey;
 
     @JsonProperty("firstName")
     private String firstName;

@@ -3,10 +3,14 @@ kind: Component
 metadata:
   name: reddog.statestore.orders
 spec:
-  type: state.redis
+  type: state.azure.cosmosdb
   version: v1
   metadata:
-  - name: redisHost
-    value: redis:6379
-  - name: redisDB
-    value: "1"
+  - name: url
+    value: https://reddog5977kosta16939.documents.azure.com:443/
+  - name: database
+    value: reddog
+  - name: collection
+    value: orders
+  - name: masterKey
+    value: BnEdVGAnDoCGQc6vBO79gJeHnB7INX5QrC8yFovOIaL5VVZLqth0lSr1jf8zUVgGo44bjaHix7NmACDbqb7zTQ==

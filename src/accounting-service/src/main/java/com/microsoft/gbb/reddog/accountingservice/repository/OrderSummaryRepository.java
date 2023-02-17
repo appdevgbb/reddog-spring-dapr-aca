@@ -13,20 +13,85 @@ import java.util.List;
 @Repository
 public interface OrderSummaryRepository extends CosmosRepository<OrderSummaryDto, String> {
     // Query all orders
-    @Query(value = "SELECT * FROM c")
+    @Query(value = """ 
+                        SELECT c["id"],
+                        c["value"]["firstName"],
+                        c["value"]["lastName"],
+                        c["value"]["loyaltyId"],
+                        c["value"]["orderCompletedDate"],
+                        c["value"]["orderDateInstant"],
+                        c["value"]["orderId"],
+                        c["value"]["orderItems"],
+                        c["value"]["orderTotal"],
+                        c["value"]["origin"],
+                        c["value"]["storeId"],
+                        c["value"]["storeLatitude"],
+                        c["value"]["storeLongitude"] FROM c """)
     List<OrderSummaryDto> findAllOrders();
 
     // Query for equality using ==
-    @Query(value = "SELECT * FROM c WHERE c.id = @storeId")
+    @Query(value = """ 
+        SELECT c["id"],
+    c["value"]["firstName"],
+    c["value"]["lastName"],
+    c["value"]["loyaltyId"],
+    c["value"]["orderCompletedDate"],
+    c["value"]["orderDateInstant"],
+    c["value"]["orderId"],
+    c["value"]["orderItems"],
+    c["value"]["orderTotal"],
+    c["value"]["origin"],
+    c["value"]["storeId"],
+    c["value"]["storeLatitude"],
+    c["value"]["storeLongitude"]  FROM c WHERE c[\"value\"][\"storeId\"] = @storeId """)
     List<OrderSummaryDto> findAllOrdersForStore(@Param("storeId") String storeId);
 
-    @Query(value = "SELECT * FROM c where c.orderCompletedDate = null OFFSET 1 LIMIT 50")
+    @Query(value = """
+        SELECT c["id"],
+    c["value"]["firstName"],
+    c["value"]["lastName"],
+    c["value"]["loyaltyId"],
+    c["value"]["orderCompletedDate"],
+    c["value"]["orderDateInstant"],
+    c["value"]["orderId"],
+    c["value"]["orderItems"],
+    c["value"]["orderTotal"],
+    c["value"]["origin"],
+    c["value"]["storeId"],
+    c["value"]["storeLatitude"],
+    c["value"]["storeLongitude"]  FROM c where c[\"value\"][\"orderCompletedDate\"] = 0 OFFSET 1 LIMIT 50""")
     List<OrderSummaryDto> findAllInflightOrders();
 
-    @Query(value = "SELECT * FROM c where c.orderCompletedDate != null OFFSET 1 LIMIT 50")
+    @Query(value = """
+        SELECT c["id"],
+    c["value"]["firstName"],
+    c["value"]["lastName"],
+    c["value"]["loyaltyId"],
+    c["value"]["orderCompletedDate"],
+    c["value"]["orderDateInstant"],
+    c["value"]["orderId"],
+    c["value"]["orderItems"],
+    c["value"]["orderTotal"],
+    c["value"]["origin"],
+    c["value"]["storeId"],
+    c["value"]["storeLatitude"],
+    c["value"]["storeLongitude"]  FROM c where c[\"value\"][\"orderCompletedDate\"] > 0 OFFSET 1 LIMIT 50""")
     List<OrderSummaryDto> findAllCompletedOrders();
 
-    @Query(value = "SELECT * FROM c WHERE c.id = @storeId and c.orderCompletedDate = null")
+    @Query(value = """
+        SELECT c["id"],
+    c["value"]["firstName"],
+    c["value"]["lastName"],
+    c["value"]["loyaltyId"],
+    c["value"]["orderCompletedDate"],
+    c["value"]["orderDateInstant"],
+    c["value"]["orderId"],
+    c["value"]["orderItems"],
+    c["value"]["orderTotal"],
+    c["value"]["origin"],
+    c["value"]["storeId"],
+    c["value"]["storeLatitude"],
+    c["value"]["storeLongitude"] FROM c WHERE c[\"value\"][\"storeId\"] = @storeId and c[\"value\"][\"orderCompletedDate\"] = null""")
     List<OrderSummaryDto> findAllInflightOrdersForStore(@Param("storeId") String storeId);
 
     @Query(value = "SELECT count(1) as total," +
