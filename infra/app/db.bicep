@@ -4,24 +4,24 @@ param tags object = {}
 
 param loyaltyContainerName string = 'loyalty'
 param productsContainerName string = 'products'
-param accountingContainerName string = 'accounting'
+param ordersContainerName string = 'orders'
 
 
 param containers array = [
   {
     name: loyaltyContainerName
     id: loyaltyContainerName
-    partitionKey : '/id'
+    partitionKey : '/partitionKey'
   }
   {
     name: productsContainerName
     id: productsContainerName
-    partitionKey : '/id'
+    partitionKey : '/partitionKey'
   }
   {
-    name: accountingContainerName
-    id: accountingContainerName
-    partitionKey : '/id'
+    name: ordersContainerName
+    id: ordersContainerName
+    partitionKey : '/partitionKey'
   }
 ]
 param databaseName string = ''
@@ -47,4 +47,4 @@ output endpoint string = cosmos.outputs.endpoint
 output accountName string = cosmos.outputs.accountName
 output loyaltyContainerName string = loyaltyContainerName
 output productsContainerName string = productsContainerName
-output accountingContainerName string = accountingContainerName
+output ordersContainerName string = ordersContainerName

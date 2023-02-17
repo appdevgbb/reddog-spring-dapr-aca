@@ -44,15 +44,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
-         <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-spring-data-cosmos</artifactId>
-            <version>${azure.spring.data.cosmos.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
@@ -70,28 +61,10 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.6.9</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-spring-data-cosmos</artifactId>
-            <version>${azure.spring.data.cosmos.version}</version>
-        </dependency> -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.azure.spring</groupId>-->
-        <!--            <artifactId>spring-cloud-azure-starter</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.azure.spring</groupId>-->
-        <!--            <artifactId>spring-cloud-azure-starter-actuator</artifactId>-->
-        <!--        </dependency>-->
-       
-        <!--        <dependency>-->
-        <!--            <groupId>com.azure.spring</groupId>-->
-        <!--            <artifactId>spring-cloud-azure-trace-sleuth</artifactId>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
@@ -142,13 +115,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>com.azure.spring</groupId>-->
-            <!--                <artifactId>spring-cloud-azure-dependencies</artifactId>-->
-            <!--                <version>${spring-cloud-azure.version}</version>-->
-            <!--                <type>pom</type>-->
-            <!--                <scope>import</scope>-->
-            <!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 

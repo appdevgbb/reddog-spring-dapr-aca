@@ -8,11 +8,6 @@ data:
   CREATE_ORDER_CRON_SCHEDULE: ${CREATE_ORDER_CRON_SCHEDULE:*/5 * * * * *}
   MAX_UNIQUE_ITEMS_PER_ORDER: ${MAX_UNIQUE_ITEMS_PER_ORDER:10}
   ORDER_SVC_URL: ${ORDER_SVC_URL:http://localhost:8702}
-messaging:
-  pubsub:
-    enabled: true
-    TOPIC_NAME: virtual-customers-topic
-    SUB_NAME: pubsub
 management:
   endpoints:
     web:
@@ -23,11 +18,6 @@ management:
       show-details: ALWAYS
 server:
   port: 8701
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-    enabled: false
 org:
   jobrunr:
     background-job-server:

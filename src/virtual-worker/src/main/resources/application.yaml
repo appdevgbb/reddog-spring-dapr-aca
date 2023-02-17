@@ -13,11 +13,6 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-    enabled: false
 server:
   port: 8706
 springdoc:

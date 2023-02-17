@@ -1,14 +1,8 @@
 package com.microsoft.gbb.reddog.accountingservice.dto;
 
-import com.azure.spring.data.cosmos.core.mapping.Container;
-import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -19,15 +13,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Container(containerName="accounting")
 public class OrderSummaryDto extends AbstractDto<String> {
-
-    @JsonProperty("orderCompletedDate")
-    private LocalDate orderCompletedDate;
-
+    
     @JsonProperty("loyaltyId")
-    @PartitionKey
     private String loyaltyId;
+
+    @JsonProperty("partitionKey")
+    private String partitionKey;
 
     @JsonProperty("firstName")
     private String firstName;
@@ -36,15 +28,16 @@ public class OrderSummaryDto extends AbstractDto<String> {
     private String lastName;
 
     @JsonProperty("orderId")
-    @Id
     private String orderId;
 
     @JsonProperty("storeId")
     private String storeId;
 
-    @JsonProperty("orderDate")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime orderDate;
+    @JsonProperty("allHack")
+    private String allHack;
+
+    @JsonProperty("isCompleted")
+    private String isCompleted;
 
     @JsonProperty("orderDateInstant")
     private long orderDateInstant;
@@ -67,13 +60,11 @@ public class OrderSummaryDto extends AbstractDto<String> {
     @Override
     public String toString() {
         return "OrderSummaryDto{" +
-                "orderCompletedDate=" + orderCompletedDate +
                 ", loyaltyId='" + loyaltyId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", orderId=" + orderId +
                 ", storeId='" + storeId + '\'' +
-                ", orderDate='" + orderDate + '\'' +
                 ", orderItems=" + orderItems +
                 ", orderTotal=" + orderTotal +
                 ", origin='" + origin + '\'' +

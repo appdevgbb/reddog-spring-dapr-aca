@@ -1,0 +1,25 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: reddog.statestore.orders
+spec:
+  type: state.mongodb
+  version: v1
+  metadata:
+  - name: keyPrefix
+    value: none
+  - name: host
+    value: mongo:27017
+  - name: username
+    value: admin
+  - name: password
+    value: masterkey1
+  - name: databaseName
+    value: reddog
+  - name: collectionName
+    value: orders
+  - name: params
+    value: "?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
+scopes:
+- accounting-service
+- makeline-service

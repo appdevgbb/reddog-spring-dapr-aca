@@ -5,17 +5,6 @@ spring:
     name: loyalty-service
   banner:
     location: static/banner.txt
-  redis:
-    host: ${AZUREREDISHOST}
-    port: ${AZUREREDISPORT}
-    password: ${AZUREREDISACCESSKEY}
-    ssl: true
-    connect-timeout: 5000
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-    enabled: false
 management:
   endpoints:
     web:

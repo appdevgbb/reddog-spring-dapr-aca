@@ -5,11 +5,6 @@ spring:
     name: receipt-generation-service
   banner:
     location: static/banner.txt
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-    enabled: false
 data:
   BLOB:
     CONTAINER: ${BLOB_CONTAINER:reddogasa}

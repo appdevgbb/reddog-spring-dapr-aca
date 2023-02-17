@@ -8,3 +8,9 @@ spec:
   metadata: 
     - name: redisHost
       value: redis:6379
+scopes:
+- accounting-service
+- loyalty-service
+- makeline-service
+- order-service
+- receipt-generation-service

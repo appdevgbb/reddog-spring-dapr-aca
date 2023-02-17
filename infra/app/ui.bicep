@@ -50,6 +50,10 @@ module app '../core/host/container-app.bicep' = {
         value: ordersUri
       }
       {
+        name: 'WORKER_URL'
+        value: ordersUri
+      }
+      {
         name: 'ACCOUNTING_URL'
         value: accountingUri
       }

@@ -5,7 +5,6 @@ import com.microsoft.gbb.reddog.orderservice.dto.OrderSummaryDto;
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
