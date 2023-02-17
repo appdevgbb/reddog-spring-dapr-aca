@@ -7,20 +7,13 @@ import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.DaprPreviewClient;
 import io.dapr.client.domain.QueryStateRequest;
 import io.dapr.client.domain.QueryStateResponse;
-import io.dapr.client.domain.SaveStateRequest;
-import io.dapr.client.domain.State;
-import io.dapr.client.domain.StateOptions;
 import io.dapr.client.domain.query.Query;
 import io.dapr.client.domain.query.filters.AndFilter;
 import io.dapr.client.domain.query.filters.EqFilter;
-import io.dapr.v1.DaprProtos.SaveStateRequestOrBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 

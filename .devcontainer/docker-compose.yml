@@ -12,6 +12,16 @@ services:
     command: sleep infinity
   redis:
     image: redis:alpine
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: masterkey1
+      MONGO_INITDB_DATABASE: reddog
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+
   zipkin:
     image: openzipkin/zipkin-slim:latest
   dapr-placement:
