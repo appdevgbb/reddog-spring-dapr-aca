@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.microsoft.applicationinsights.attach.ApplicationInsights;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages =  {"com.microsoft.gbb.reddog.receiptgenerationservice", "io.dapr.springboot" })
 public class ReceiptGenerationServiceApplication {
 
     public static void main(String[] args) {

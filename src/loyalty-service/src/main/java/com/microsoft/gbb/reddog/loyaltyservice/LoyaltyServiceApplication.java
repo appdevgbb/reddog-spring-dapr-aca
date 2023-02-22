@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 import com.microsoft.applicationinsights.attach.ApplicationInsights;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages =  {"com.microsoft.gbb.reddog.loyaltyservice", "io.dapr.springboot" })
 @EnableFeignClients
 public class LoyaltyServiceApplication {
 

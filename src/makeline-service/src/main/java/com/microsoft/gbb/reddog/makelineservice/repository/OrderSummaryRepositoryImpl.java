@@ -3,7 +3,6 @@ package com.microsoft.gbb.reddog.makelineservice.repository;
 import com.microsoft.gbb.reddog.makelineservice.dto.OrderSummaryDto;
 
 import io.dapr.client.DaprClient;
-import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.DaprPreviewClient;
 import io.dapr.client.domain.QueryStateRequest;
 import io.dapr.client.domain.QueryStateResponse;
@@ -26,18 +25,25 @@ import org.springframework.stereotype.Service;
 @Service
 @Qualifier("orderSummaryRepository")
 public class OrderSummaryRepositoryImpl implements OrderSummaryRepository {
-  private final DaprClient client = (new DaprClientBuilder()).build();
-  private final DaprPreviewClient previewClient = (new DaprClientBuilder()).buildPreviewClient();
+
+  public OrderSummaryRepositoryImpl(@Qualifier("daprPreviewClient") DaprPreviewClient previewClient,
+      @Qualifier("daprClient") DaprClient client) {
+    this.previewClient = previewClient;
+    this.client = client;
+  }
+
+  private final DaprPreviewClient previewClient;
+
+  private final DaprClient client;
   private final String stateStoreName = "reddog.statestore.orders";
 
   @Override
   public OrderSummaryDto saveOrder(OrderSummaryDto orderSummary) {
-      Map<String, String> meta = new HashMap<>();
-      meta.put("contentType", "application/json");
+    Map<String, String> meta = new HashMap<>();
+    meta.put("contentType", "application/json");
 
-      SaveStateRequest request = new SaveStateRequest(stateStoreName).setStates(
-          new State<>( orderSummary.getOrderId(), orderSummary, null, meta, null)
-      );
+    SaveStateRequest request = new SaveStateRequest(stateStoreName).setStates(
+        new State<>(orderSummary.getOrderId(), orderSummary, null, meta, null));
     client.saveBulkState(request).block();
     return orderSummary;
   }

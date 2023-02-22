@@ -8,7 +8,6 @@ import com.microsoft.gbb.reddog.virtualcustomers.model.Product;
 import com.microsoft.gbb.reddog.virtualcustomers.util.CustomerGenerator;
 
 import io.dapr.client.DaprClient;
-import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.HttpExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.jobrunr.jobs.annotations.Job;
@@ -17,12 +16,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
 /**
  * The type Order service.
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class OrderCreationJobService {
 
     public static final String ORIGIN = "jobrunr";
@@ -30,16 +32,12 @@ public class OrderCreationJobService {
     @Value("${data.STORE_ID}")
     private String STORE_ID;
 
-    private final DaprClient client = (new DaprClientBuilder()).build();
     private final String orderService = "order-service";
-
+    @Autowired
     private final CustomerGenerator customerGenerator;
+    @Autowired
+    private final DaprClient client; 
 
-
-    public OrderCreationJobService(CustomerGenerator customerGenerator) {
-        this.customerGenerator = customerGenerator;
-    }
-    
     @Recurring(id = "create-orders", cron = "#{'${data.CREATE_ORDER_CRON_SCHEDULE}'}")
     @Job(name = "Virtual Customers")
     public void execute() {

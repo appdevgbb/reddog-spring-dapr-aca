@@ -6,16 +6,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import io.dapr.client.DaprClient;
-import io.dapr.client.DaprClientBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Receipt generation service
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ReceiptGenerationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReceiptGenerationService.class);
-    private final DaprClient client = (new DaprClientBuilder()).build();
+    @Autowired
+    private final DaprClient client;    
 
     public void generateReceipt(OrderSummaryDto orderSummary) {
         LOGGER.info("Generating receipt");

@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.microsoft.applicationinsights.attach.ApplicationInsights;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages =  {"com.microsoft.gbb.reddog.makelineservice", "io.dapr.springboot" })
 public class MakelineServiceApplication {
 
     public static void main(String[] args) {

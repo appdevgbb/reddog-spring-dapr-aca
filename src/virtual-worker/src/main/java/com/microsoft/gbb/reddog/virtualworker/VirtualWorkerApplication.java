@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.microsoft.applicationinsights.attach.ApplicationInsights;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages =  {"com.microsoft.gbb.reddog.virtualworker", "io.dapr.springboot" })
 public class VirtualWorkerApplication {
 
     public static void main(String[] args) {

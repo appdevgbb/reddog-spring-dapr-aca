@@ -2,7 +2,6 @@ package com.microsoft.gbb.reddog.virtualworker.service;
 
 import com.microsoft.gbb.reddog.virtualworker.dto.OrderSummaryDto;
 import io.dapr.client.DaprClient;
-import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.HttpExtension;
 import io.leego.banana.Ansi;
 import io.leego.banana.BananaUtils;
@@ -12,16 +11,19 @@ import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
 /**
  * The type Order service.
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class VirtualWorkerService {
-    private final DaprClient client = (new DaprClientBuilder()).build();
     private final String makelineService = "makeline-service";
-
+    @Autowired
+    private final DaprClient client; 
     public void checkOrders(String storeId) {
         log.info("Checking orders for store: {}", storeId);
         List<OrderSummaryDto> orders = getOrders(storeId);

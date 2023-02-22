@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.microsoft.applicationinsights.attach.ApplicationInsights;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages =  {"com.microsoft.gbb.reddog.orderservice", "io.dapr.springboot" })
 public class OrderServiceApplication {
 
     public static void main(String[] args) {

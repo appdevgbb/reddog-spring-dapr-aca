@@ -4,7 +4,6 @@ import com.microsoft.gbb.reddog.accountingservice.dto.ChartKeyValue;
 import com.microsoft.gbb.reddog.accountingservice.dto.OrderSummaryDto;
 import com.microsoft.gbb.reddog.accountingservice.dto.OrdersTimeSeries;
 
-import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.DaprPreviewClient;
 import io.dapr.client.domain.QueryStateRequest;
 import io.dapr.client.domain.QueryStateResponse;
@@ -13,20 +12,27 @@ import io.dapr.client.domain.query.Query;
 import io.dapr.client.domain.query.filters.AndFilter;
 import io.dapr.client.domain.query.filters.EqFilter;
 import io.dapr.client.domain.query.filters.Filter;
+
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @Qualifier("orderSummaryRepository")
+@RequiredArgsConstructor
 public class OrderSummaryRepositoryImpl implements OrderSummaryRepository {
-    private final DaprPreviewClient previewClient = (new DaprClientBuilder()).buildPreviewClient();
+    
+    @Autowired
+    private final DaprPreviewClient previewClient;
+
     private final String stateStoreName = "reddog.statestore.orders";
 
     private List<OrderSummaryDto> findBy(Filter filter) {

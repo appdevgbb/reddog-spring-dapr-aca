@@ -8,16 +8,19 @@ import org.springframework.stereotype.Service;
 import com.microsoft.gbb.reddog.orderservice.dto.ProductDto;
 
 import io.dapr.client.DaprClient;
-import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.State;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
 @Slf4j
 @Service
 @Qualifier("productrepository")
+@RequiredArgsConstructor
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final DaprClient client = (new DaprClientBuilder()).build();
+    @Autowired
+    private final DaprClient client;    
     private final String stateStoreName = "reddog.statestore.products";
 
     public ArrayList<ProductDto> findAll() {
