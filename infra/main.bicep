@@ -370,7 +370,6 @@ module ui './app/ui.bicep' = {
 // }
 
 // Data outputs
-output AZURE_COSMOS_CONNECTION_STRING_KEY string = cosmos.outputs.connectionStringKey
 output AZURE_COSMOS_DATABASE_NAME string = cosmos.outputs.databaseName
 output AZURE_COSMOS_ACCOUNT_NAME string = cosmos.outputs.accountName
 

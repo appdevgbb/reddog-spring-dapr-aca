@@ -32,7 +32,7 @@ var scaleRules = [
       metadata: {
         topicName: 'orders'
         subscriptionName: 'accounting-service'
-        messageCount: '10'
+        messageCount: '100'
       }
       auth: [
         {

@@ -27,7 +27,7 @@ var scaleRules = [
       metadata: {
         topicName: 'orders'
         subscriptionName: 'receipt-generation-service'
-        messageCount: '10'
+        messageCount: '100'
       }
       auth: [
         {

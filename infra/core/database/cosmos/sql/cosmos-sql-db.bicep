@@ -39,6 +39,5 @@ resource database 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2022-05-15
 
 output accountId string = cosmos.outputs.id
 output accountName string = cosmos.outputs.name
-output connectionStringKey string = cosmos.outputs.connectionStringKey
 output databaseName string = databaseName
 output endpoint string = cosmos.outputs.endpoint
