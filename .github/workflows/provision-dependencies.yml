@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  provision:
     runs-on: ubuntu-latest
     env:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -37,7 +37,8 @@ jobs:
           azd login \
             --client-id ${{ secrets.AZURE_CLIENT_ID }} \
             --federated-credential-provider "github" \
-            --tenant-id ${{ secrets.AZURE_TENANT_ID }}
+            --tenant-id ${{ secrets.AZURE_TENANT_ID }} \
+            --debug
 
       - name: Azure Dev Provision
         run: azd provision --no-prompt

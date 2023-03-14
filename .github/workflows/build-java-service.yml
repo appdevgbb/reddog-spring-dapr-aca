@@ -26,4 +26,4 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: build-${{ inputs.service-name }}
-          path: ./src/${{ inputs.service-name }}/target
+          path: ./src/${{ inputs.service-name }}/target/*.jar
