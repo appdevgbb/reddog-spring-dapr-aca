@@ -10,13 +10,13 @@ permissions:
   contents: read
 jobs:
   build-all-services:
-    uses: ./.github/actions/build-all-services.yaml@actions-setup
+    uses: ./.github/workflows/build-all-services.yml
     secrets: inherit
   provision:
-    uses: ./.github/workflows/provision-dependencies.yml@actions-setup
+    uses: ./.github/workflows/provision-dependencies.yml
     needs: build-all-services
     secrets: inherit
   deploy-all-services:
-    uses: ./.github/actions/build-all-services.yaml@actions-setup
+    uses: ./.github/workflows/deploy-all-services
     needs: provision
     secrets: inherit
