@@ -37,8 +37,7 @@ jobs:
           azd login \
             --client-id ${{ secrets.AZURE_CLIENT_ID }} \
             --federated-credential-provider "github" \
-            --tenant-id ${{ secrets.AZURE_TENANT_ID }} \
-            --debug
+            --tenant-id ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Azure Dev Provision
         run: |
