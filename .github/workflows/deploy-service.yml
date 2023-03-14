@@ -61,7 +61,7 @@ jobs:
       
       - uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.service-name }}
+          name: build-${{ inputs.service-name }}
           path: ./src/${{ inputs.service-name }}
       
       - name: Display structure of downloaded files
