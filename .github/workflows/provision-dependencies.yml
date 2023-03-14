@@ -1,5 +1,18 @@
 on:
   workflow_call:
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_CREDENTIALS:
+        required: true
+      AZURE_ENV_NAME:
+        required: true
+      AZURE_LOCATION:
+        required: true  
 
 permissions:
   id-token: write
@@ -16,6 +29,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Install Azure Dev CLI
+        run: curl -fsSL https://aka.ms/install-azd.sh | bash
 
       - name: Log in with Azure (Federated Credentials)
         if: ${{ env.AZURE_CLIENT_ID != '' }}

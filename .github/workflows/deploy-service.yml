@@ -5,16 +5,26 @@ on:
         required: true
         type: string
     secrets:
-      envPAT:
+      AZURE_CLIENT_ID:
         required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_CREDENTIALS:
+        required: true
+      AZURE_ENV_NAME:
+        required: true
+      AZURE_LOCATION:
+        required: true  
 
-# https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#set-up-azure-login-with-openid-connect-authentication
 permissions:
   id-token: write
   contents: read
 
 jobs:
   build:
+    name: Deploy ${{ inputs.service-name }}
     runs-on: ubuntu-latest
     env:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -24,6 +34,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      
+      - name: Install Azure Dev CLI
+        run: curl -fsSL https://aka.ms/install-azd.sh | bash
 
       - name: Log in with Azure (Federated Credentials)
         if: ${{ env.AZURE_CLIENT_ID != '' }}
@@ -47,6 +60,15 @@ jobs:
         shell: pwsh
         env:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.service-name }}
+          path: ./src/${{ inputs.service-name }}
+      
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: path/to/artifact
 
       - name: Azure Dev Deploy
         run: azd deploy --service  ${{ inputs.service-name }} --no-prompt

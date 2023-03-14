@@ -11,7 +11,6 @@ permissions:
 jobs:
   build-all-services:
     uses: ./.github/workflows/build-all-services.yml
-    secrets: inherit
   provision:
     uses: ./.github/workflows/provision-dependencies.yml
     needs: build-all-services

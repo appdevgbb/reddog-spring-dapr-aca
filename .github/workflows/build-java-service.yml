@@ -4,14 +4,13 @@ on:
       service-name:
         required: true
         type: string
-
-# https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#set-up-azure-login-with-openid-connect-authentication
 permissions:
   id-token: write
   contents: read
 
 jobs:
   build:
+    name: Build ${{ inputs.service-name }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,5 +26,4 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: build-${{ inputs.service-name }}
-          path: target
-          working-directory: ./src/${{ inputs.service-name }}
+          path: ./src/${{ inputs.service-name }}/target
