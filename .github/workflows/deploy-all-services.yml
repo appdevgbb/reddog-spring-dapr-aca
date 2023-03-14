@@ -3,6 +3,14 @@ on:
     secrets:
       AZURE_CLIENT_ID:
         required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_ENV_NAME:
+        required: true
+      AZURE_LOCATION:
+        required: true  
 
 # https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#set-up-azure-login-with-openid-connect-authentication
 permissions:
