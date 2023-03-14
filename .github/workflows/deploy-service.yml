@@ -64,12 +64,11 @@ jobs:
           name: build-${{ inputs.service-name }}
           path: ./src/${{ inputs.service-name }}/target
       
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: ./src/${{ inputs.service-name }}
 
       - name: Azure Dev Deploy
-        run: azd deploy --service  ${{ inputs.service-name }} --no-prompt
+        run: |
+          azd env refresh
+          azd deploy --service  ${{ inputs.service-name }} --no-prompt
         env:
           AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
           AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}
