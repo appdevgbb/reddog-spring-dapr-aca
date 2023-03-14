@@ -11,43 +11,43 @@ permissions:
 
 jobs:
   build-accounting-service:
-    uses: ./.github/actions/build-java-service.yaml@actions-setup
+    uses: ./.github/workflows/build-java-service.yaml
     needs: provision
     with:
       service-name: accounting-service
     secrets: inherit
   build-loyalty-service:
-    uses: ./.github/actions/build-java-service.yaml@actions-setup
+    uses: ./.github/workflows/build-java-service.yaml
     needs: provision
     with:
       service-name: loyalty-service
     secrets: inherit
   build-makeline-service:
-    uses: ./.github/actions/build-java-service.yaml@actions-setup
+    uses: ./.github/workflows/build-java-service.yaml
     needs: provision
     with:
       service-name: makeline-service
     secrets: inherit
   build-order-service:
-    uses: ./.github/actions/build-java-service.yaml@actions-setup
+    uses: ./.github/workflows/build-java-service.yaml
     needs: provision
     with:
       service-name: order-service
     secrets: inherit
   build-receipt-generation-service:
-    uses: ./.github/actions/build-java-service.yaml@actions-setup
+    uses: ./.github/workflows/build-java-service.yaml
     needs: provision
     with:
       service-name: receipt-generation-service
     secrets: inherit
   build-virtual-customers:
-    uses: ./.github/actions/build-java-service.yaml@actions-setup
+    uses: ./.github/workflows/build-java-service.yaml
     needs: provision
     with:
       service-name: virtual-customers
     secrets: inherit
   build-virtual-worker:
-    uses: ./.github/actions/build-java-service.yaml@actions-setup
+    uses: ./.github/workflows/build-java-service.yaml
     needs: provision
     with:
       service-name: virtual-worker
