@@ -17,6 +17,6 @@ jobs:
     needs: build-all-services
     secrets: inherit
   deploy-all-services:
-    uses: ./.github/workflows/deploy-all-services
+    uses: ./.github/workflows/deploy-all-services.yml
     needs: provision
     secrets: inherit
