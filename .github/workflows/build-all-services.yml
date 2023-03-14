@@ -12,48 +12,40 @@ permissions:
 jobs:
   build-accounting-service:
     uses: ./.github/workflows/build-java-service.yml
-    needs: provision
     with:
       service-name: accounting-service
     secrets: inherit
   build-loyalty-service:
     uses: ./.github/workflows/build-java-service.yml
-    needs: provision
     with:
       service-name: loyalty-service
     secrets: inherit
   build-makeline-service:
     uses: ./.github/workflows/build-java-service.yml
-    needs: provision
     with:
       service-name: makeline-service
     secrets: inherit
   build-order-service:
     uses: ./.github/workflows/build-java-service.yml
-    needs: provision
     with:
       service-name: order-service
     secrets: inherit
   build-receipt-generation-service:
     uses: ./.github/workflows/build-java-service.yml
-    needs: provision
     with:
       service-name: receipt-generation-service
     secrets: inherit
   build-virtual-customers:
     uses: ./.github/workflows/build-java-service.yml
-    needs: provision
     with:
       service-name: virtual-customers
     secrets: inherit
   build-virtual-worker:
     uses: ./.github/workflows/build-java-service.yml
-    needs: provision
     with:
       service-name: virtual-worker
     secrets: inherit
   build-ui:
-    needs: provision
     runs-on: ubuntu-latest
     steps:
       - name: build npm

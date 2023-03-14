@@ -12,48 +12,40 @@ permissions:
 jobs:
   deploy-accounting-service:
     uses: ./.github/workflows/deploy-service.yml
-    needs: provision
     with:
       service-name: accounting-service
     secrets: inherit
   deploy-loyalty-service:
     uses: ./.github/workflows/deploy-service.yml
-    needs: provision
     with:
       service-name: loyalty-service
     secrets: inherit
   deploy-makeline-service:
     uses: ./.github/workflows/deploy-service.yml
-    needs: provision
     with:
       service-name: makeline-service
     secrets: inherit
   deploy-order-service:
     uses: ./.github/workflows/deploy-service.yml
-    needs: provision
     with:
       service-name: order-service
     secrets: inherit
   deploy-receipt-generation-service:
     uses: ./.github/workflows/deploy-service.yml
-    needs: provision
     with:
       service-name: receipt-generation-service
     secrets: inherit
   deploy-virtual-customers:
     uses: ./.github/workflows/deploy-service.yml
-    needs: provision
     with:
       service-name: virtual-customers
     secrets: inherit
   deploy-virtual-worker:
     uses: ./.github/workflows/deploy-service.yml
-    needs: provision
     with:
       service-name: virtual-worker
     secrets: inherit
   deploy-ui:
-    needs: provision
     runs-on: ubuntu-latest
     steps:
       - name: build npm
