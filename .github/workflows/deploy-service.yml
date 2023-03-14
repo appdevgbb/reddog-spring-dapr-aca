@@ -52,8 +52,8 @@ jobs:
 
       - name: Azure Dev Deploy
         run: |
-          azd env refresh --debug
-          azd deploy --service  ${{ inputs.service-name }} --no-prompt
+          azd env refresh --environment ${{ secrets.AZURE_ENV_NAME }} --debug
+          azd deploy --service  ${{ inputs.service-name }} --environment ${{ secrets.AZURE_ENV_NAME }} --no-prompt
         env:
           AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
           AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}
