@@ -13,7 +13,7 @@
             "env": {
                 "DAPR_HTTP_PORT": "5180",
                 "DAPR_GRPC_PORT": "5101",
-                "APPLICATIONINSIGHTS_CONNECTION_STRING":  ""
+                "APPLICATIONINSIGHTS_CONNECTION_STRING":  "InstrumentationKey=a8d6e8b4-62e8-4a5b-8607-86e63306492a;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/"
             }, 
         },
         {
@@ -28,7 +28,7 @@
             "env": {
                 "DAPR_HTTP_PORT": "5280",
                 "DAPR_GRPC_PORT": "5201",
-                "APPLICATIONINSIGHTS_CONNECTION_STRING":  ""
+                "APPLICATIONINSIGHTS_CONNECTION_STRING":  "InstrumentationKey=a8d6e8b4-62e8-4a5b-8607-86e63306492a;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/"
             }, 
         },
         {
@@ -43,7 +43,7 @@
             "env": {
                 "DAPR_HTTP_PORT": "5380",
                 "DAPR_GRPC_PORT": "5301",
-                "APPLICATIONINSIGHTS_CONNECTION_STRING":  ""
+                "APPLICATIONINSIGHTS_CONNECTION_STRING":  "InstrumentationKey=a8d6e8b4-62e8-4a5b-8607-86e63306492a;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/"
             }, 
         },
         {
@@ -58,7 +58,7 @@
             "env": {
                 "DAPR_HTTP_PORT": "5480",
                 "DAPR_GRPC_PORT": "5401",
-                "APPLICATIONINSIGHTS_CONNECTION_STRING":  ""
+                "APPLICATIONINSIGHTS_CONNECTION_STRING":  "InstrumentationKey=a8d6e8b4-62e8-4a5b-8607-86e63306492a;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/"
             }, 
         },
         {
@@ -73,7 +73,7 @@
             "env": {
                 "DAPR_HTTP_PORT": "5580",
                 "DAPR_GRPC_PORT": "5501",
-                "APPLICATIONINSIGHTS_CONNECTION_STRING":  ""
+                "APPLICATIONINSIGHTS_CONNECTION_STRING":  "InstrumentationKey=a8d6e8b4-62e8-4a5b-8607-86e63306492a;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/"
             }, 
         },
         {
@@ -88,7 +88,7 @@
             "env": {
                 "DAPR_HTTP_PORT": "5680",
                 "DAPR_GRPC_PORT": "5601",
-                "APPLICATIONINSIGHTS_CONNECTION_STRING":  ""
+                "APPLICATIONINSIGHTS_CONNECTION_STRING":  "InstrumentationKey=a8d6e8b4-62e8-4a5b-8607-86e63306492a;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/"
             }, 
         },
         {
@@ -103,7 +103,7 @@
             "env": {
                 "DAPR_HTTP_PORT": "5780",
                 "DAPR_GRPC_PORT": "5701",
-                "APPLICATIONINSIGHTS_CONNECTION_STRING":  ""
+                "APPLICATIONINSIGHTS_CONNECTION_STRING":  "InstrumentationKey=a8d6e8b4-62e8-4a5b-8607-86e63306492a;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/"
             }, 
         },
         {
