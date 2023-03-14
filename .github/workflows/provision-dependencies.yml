@@ -42,7 +42,6 @@ jobs:
 
       - name: Azure Dev Provision
         run: |
-          azd env list --debug
           azd provision --no-prompt --environment ${{ secrets.AZURE_ENV_NAME }}
         env:
           AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
