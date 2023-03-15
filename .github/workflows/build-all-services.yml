@@ -42,12 +42,3 @@ jobs:
     with:
       service-name: virtual-worker
     secrets: inherit
-  build-ui:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - uses: actions/upload-artifact@v3
-      with:
-        name: build-${{ inputs.service-name }}
-        path: README.md
