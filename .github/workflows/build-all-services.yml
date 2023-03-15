@@ -42,3 +42,13 @@ jobs:
     with:
       service-name: virtual-worker
     secrets: inherit
+  build-ui:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/upload-artifact@v3
+       with:
+        name: build-${{ inputs.service-name }}
+        path: ./src/${{ inputs.service-name }}/package.json
+
+
+   
