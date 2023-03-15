@@ -45,10 +45,9 @@ jobs:
   build-ui:
     runs-on: ubuntu-latest
     steps:
-     - uses: actions/upload-artifact@v3
-       with:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - uses: actions/upload-artifact@v3
+      with:
         name: build-${{ inputs.service-name }}
-        path: ./src/${{ inputs.service-name }}/package.json
-
-
-   
+        path: README.md
