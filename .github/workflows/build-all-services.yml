@@ -42,9 +42,3 @@ jobs:
     with:
       service-name: virtual-worker
     secrets: inherit
-  build-ui:
-    runs-on: ubuntu-latest
-    steps:
-      - name: build npm
-        run: |
-          yarn install

@@ -54,8 +54,7 @@ jobs:
       service-name: virtual-worker
     secrets: inherit
   deploy-ui:
-    runs-on: ubuntu-latest
-    steps:
-      - name: build npm
-        run: |
-          yarn install
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service-name: ui
+    secrets: inherit
