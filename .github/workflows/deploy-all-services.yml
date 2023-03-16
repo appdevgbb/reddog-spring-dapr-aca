@@ -1,0 +1,61 @@
+on:
+  workflow_call:
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_ENV_NAME:
+        required: true
+      AZURE_LOCATION:
+        required: true  
+
+# https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#set-up-azure-login-with-openid-connect-authentication
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-accounting-service:
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service-name: accounting-service
+    secrets: inherit
+  deploy-loyalty-service:
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service-name: loyalty-service
+    secrets: inherit
+  deploy-makeline-service:
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service-name: makeline-service
+    secrets: inherit
+  deploy-order-service:
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service-name: order-service
+    secrets: inherit
+  deploy-receipt-generation-service:
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service-name: receipt-generation-service
+    secrets: inherit
+  deploy-virtual-customers:
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service-name: virtual-customers
+    secrets: inherit
+  deploy-virtual-worker:
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service-name: virtual-worker
+    secrets: inherit
+  deploy-ui:
+    uses: ./.github/workflows/deploy-service.yml
+    with:
+      service-name: ui
+      skip-download: true
+    secrets: inherit

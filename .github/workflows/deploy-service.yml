@@ -1,0 +1,68 @@
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+      skip-download:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_ENV_NAME:
+        required: true
+      AZURE_LOCATION:
+        required: true  
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.service-name }}
+    runs-on: ubuntu-latest
+    env:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      
+      - name: Install Azure Dev CLI
+        run: curl -fsSL https://aka.ms/install-azd.sh | bash
+
+      - name: Log in with Azure (Federated Credentials)
+        if: ${{ env.AZURE_CLIENT_ID != '' }}
+        run: |
+          azd login \
+            --client-id ${{ secrets.AZURE_CLIENT_ID }} \
+            --federated-credential-provider "github" \
+            --tenant-id ${{ secrets.AZURE_TENANT_ID }}
+      
+      - uses: actions/download-artifact@v3
+        if: ${{ inputs.skip-download != true }}
+        with:
+          name: build-${{ inputs.service-name }}
+          path: ./src/${{ inputs.service-name }}/target
+      
+
+      - name: Azure Dev Deploy
+        run: |
+          azd env new ${{ secrets.AZURE_ENV_NAME }} --location ${{ secrets.AZURE_LOCATION }} --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          azd env refresh
+          azd deploy --service  ${{ inputs.service-name }} --environment ${{ secrets.AZURE_ENV_NAME }} --no-prompt
+        env:
+          AZURE_ENV_NAME: ${{ secrets.AZURE_ENV_NAME }}
+          AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}

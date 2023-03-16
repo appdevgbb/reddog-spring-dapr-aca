@@ -1,0 +1,29 @@
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    name: Build ${{ inputs.service-name }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'microsoft'
+          java-version: '17'
+          cache: 'maven'
+      - name: Build with Maven
+        run: mvn package -DskipTests --file pom.xml
+        working-directory: ./src/${{ inputs.service-name }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ inputs.service-name }}
+          path: ./src/${{ inputs.service-name }}/target/*.jar
