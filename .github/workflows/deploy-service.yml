@@ -36,6 +36,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
       
       - name: Install Azure Dev CLI
         run: curl -fsSL https://aka.ms/install-azd.sh | bash
